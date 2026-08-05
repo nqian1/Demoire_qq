@@ -49,6 +49,7 @@ python tools/infer_qwen_demoire_candidates.py \
   --bank_version qwen-base-v1 \
   --seed 42 \
   --increment_seed \
+  --preserve_resolution \
   --steps 20 \
   --true_cfg_scale 4.0 \
   --resolution 1024
@@ -70,6 +71,7 @@ python tools/infer_qwen_demoire_candidates.py \
   --bank_version qwen-base-v1 \
   --seed 42 \
   --increment_seed \
+  --preserve_resolution \
   --steps 20 \
   --true_cfg_scale 4.0 \
   --resolution 1024
@@ -84,6 +86,12 @@ seed = base_seed + sample_index * num_candidates + candidate_index
 With `--seed 42 --num_candidates 4 --increment_seed`, the first input uses
 seeds 42--45, the second input uses 46--49, and so on. The seed is written to
 every metadata record, so each result is reproducible.
+
+With `--preserve_resolution`, an input that is not divisible by 32 is
+edge-padded to the next multiple of 32 for Qwen inference and cropped back to
+its exact original width and height before it is saved. In this mode,
+`--resolution` does not resize the image. Full-resolution 4K inference may
+require substantially more GPU memory; run the smoke test first.
 
 The output layout is:
 
@@ -184,4 +192,3 @@ If four seeds are consistently too similar, first test eight candidates:
 
 Prompt variants should be treated as a separate ablation or stored explicitly
 in metadata, rather than silently mixed into the same seed-only candidate bank.
-
