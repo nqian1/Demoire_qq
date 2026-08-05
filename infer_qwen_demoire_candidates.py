@@ -49,6 +49,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Iterable, Optional
 
+import numpy as np
 import torch
 from PIL import Image, ImageDraw, ImageFont, ImageOps
 
@@ -168,6 +169,15 @@ def parse_args() -> argparse.Namespace:
         action=argparse.BooleanOptionalAction,
         default=True,
         help="按输入图宽高比自动计算输出尺寸，默认开启。",
+    )
+    parser.add_argument(
+        "--preserve_resolution",
+        action=argparse.BooleanOptionalAction,
+        default=False,
+        help=(
+            "Preserve the exact input resolution. Inputs are edge-padded to a multiple "
+            "of 32 for Qwen inference and cropped back after generation."
+        ),
     )
     parser.add_argument(
         "--height",
@@ -320,6 +330,51 @@ def resolve_output_size(
     out_width = max((out_width // 32) * 32, 32)
     out_height = max((out_height // 32) * 32, 32)
     return out_width, out_height
+
+
+def prepare_generation_image(
+    image: Image.Image,
+    preserve_resolution: bool,
+    auto_resize: bool,
+    resolution: int,
+    height: int,
+    width: int,
+) -> tuple[Image.Image, int, int, Optional[tuple[int, int, int, int]]]:
+    """Prepare an aligned Qwen input and an optional crop back to source size."""
+    image = image.convert("RGB")
+    if not preserve_resolution:
+        out_width, out_height = resolve_output_size(
+            image=image,
+            auto_resize=auto_resize,
+            resolution=resolution,
+            height=height,
+            width=width,
+        )
+        return image, out_width, out_height, None
+
+    source_width, source_height = image.size
+    out_width = max(math.ceil(source_width / 32) * 32, 32)
+    out_height = max(math.ceil(source_height / 32) * 32, 32)
+    pad_width = out_width - source_width
+    pad_height = out_height - source_height
+    left = pad_width // 2
+    right = pad_width - left
+    top = pad_height // 2
+    bottom = pad_height - top
+
+    if pad_width or pad_height:
+        array = np.asarray(image)
+        array = np.pad(
+            array,
+            ((top, bottom), (left, right), (0, 0)),
+            mode="edge",
+        )
+        generation_image = Image.fromarray(array)
+    else:
+        generation_image = image
+
+    crop_box = (left, top, left + source_width, top + source_height)
+    return generation_image, out_width, out_height, crop_box
 
 
 def iter_jsonl_samples(
@@ -670,8 +725,10 @@ def run() -> None:
                 continue
 
             image = Image.open(sample.image_path).convert("RGB")
-            out_width, out_height = resolve_output_size(
+            source_width, source_height = image.size
+            generation_image, out_width, out_height, crop_box = prepare_generation_image(
                 image=image,
+                preserve_resolution=args.preserve_resolution,
                 auto_resize=args.auto_resize,
                 resolution=args.resolution,
                 height=args.height,
@@ -688,7 +745,7 @@ def run() -> None:
             )
             result = generate_one(
                 pipe=pipe,
-                image=image,
+                image=generation_image,
                 prompt=sample.prompt,
                 negative_prompt=args.negative_prompt,
                 out_width=out_width,
@@ -698,6 +755,8 @@ def run() -> None:
                 seed=sample_seed,
                 max_sequence_length=args.max_sequence_length,
             )
+            if crop_box is not None:
+                result = result.crop(crop_box)
             result.save(output_path)
 
             write_metadata(
@@ -714,8 +773,13 @@ def run() -> None:
                     "prompt": sample.prompt,
                     "negative_prompt": args.negative_prompt,
                     "seed": sample_seed,
-                    "width": out_width,
-                    "height": out_height,
+                    "width": result.width,
+                    "height": result.height,
+                    "source_width": source_width,
+                    "source_height": source_height,
+                    "generation_width": out_width,
+                    "generation_height": out_height,
+                    "preserve_resolution": args.preserve_resolution,
                     "steps": args.steps,
                     "true_cfg_scale": args.true_cfg_scale,
                     "model_path": str(args.model_path.expanduser().resolve()),
@@ -743,8 +807,10 @@ def run() -> None:
                 print(f"[Skip][LoRA] {output_path}", flush=True)
             else:
                 image = Image.open(sample.image_path).convert("RGB")
-                out_width, out_height = resolve_output_size(
+                source_width, source_height = image.size
+                generation_image, out_width, out_height, crop_box = prepare_generation_image(
                     image=image,
+                    preserve_resolution=args.preserve_resolution,
                     auto_resize=args.auto_resize,
                     resolution=args.resolution,
                     height=args.height,
@@ -761,7 +827,7 @@ def run() -> None:
                 )
                 result = generate_one(
                     pipe=pipe,
-                    image=image,
+                    image=generation_image,
                     prompt=sample.prompt,
                     negative_prompt=args.negative_prompt,
                     out_width=out_width,
@@ -771,6 +837,8 @@ def run() -> None:
                     seed=sample_seed,
                     max_sequence_length=args.max_sequence_length,
                 )
+                if crop_box is not None:
+                    result = result.crop(crop_box)
                 result.save(output_path)
 
                 write_metadata(
@@ -787,8 +855,13 @@ def run() -> None:
                         "prompt": sample.prompt,
                         "negative_prompt": args.negative_prompt,
                         "seed": sample_seed,
-                        "width": out_width,
-                        "height": out_height,
+                        "width": result.width,
+                        "height": result.height,
+                        "source_width": source_width,
+                        "source_height": source_height,
+                        "generation_width": out_width,
+                        "generation_height": out_height,
+                        "preserve_resolution": args.preserve_resolution,
                         "steps": args.steps,
                         "true_cfg_scale": args.true_cfg_scale,
                         "model_path": str(args.model_path.expanduser().resolve()),
