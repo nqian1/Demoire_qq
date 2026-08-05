@@ -211,6 +211,18 @@ def parse_args() -> argparse.Namespace:
         help="第 i 张图片使用 seed+i；未开启时所有图片都使用同一个 seed。",
     )
     parser.add_argument(
+        "--num_candidates",
+        type=int,
+        default=4,
+        help="Number of stochastic candidates generated for each input image (default: 4).",
+    )
+    parser.add_argument(
+        "--bank_version",
+        type=str,
+        default="qwen-base-v1",
+        help="Version string written to every pseudo-GT candidate metadata record.",
+    )
+    parser.add_argument(
         "--max_sequence_length",
         type=int,
         default=1024,
@@ -570,14 +582,14 @@ def make_comparison(
     return canvas
 
 
-def safe_output_name(sample_id: str, index: int) -> str:
+def safe_output_name(sample_id: str, index: int, candidate_index: int) -> str:
     cleaned = "".join(
         character if character.isalnum() or character in "-_." else "_"
         for character in sample_id
     ).strip("._")
     if not cleaned:
         cleaned = f"sample_{index:06d}"
-    return f"{index:06d}_{cleaned}.png"
+    return f"{index:06d}_{cleaned}_candidate_{candidate_index:02d}.png"
 
 
 def ensure_dirs(output_dir: Path, mode: str, save_comparison: bool) -> dict[str, Path]:
@@ -606,6 +618,9 @@ def should_skip(path: Path, overwrite: bool) -> bool:
 def run() -> None:
     args = parse_args()
 
+    if args.num_candidates < 1:
+        raise ValueError("--num_candidates must be at least 1.")
+
     if not torch.cuda.is_available() and (
         args.device.startswith("cuda") or args.device_map is not None or args.cpu_offload
     ):
@@ -626,20 +641,27 @@ def run() -> None:
     print(f"[Info] output: {output_dir}", flush=True)
     print(
         f"[Info] steps={args.steps}, true_cfg_scale={args.true_cfg_scale}, "
-        f"seed={args.seed}, resolution={args.resolution}, auto_resize={args.auto_resize}",
+        f"seed={args.seed}, candidates_per_image={args.num_candidates}, "
+        f"resolution={args.resolution}, auto_resize={args.auto_resize}",
         flush=True,
     )
 
     pipe = load_pipeline(args)
 
+    candidate_jobs = [
+        (sample_index, candidate_index, sample)
+        for sample_index, sample in enumerate(samples)
+        for candidate_index in range(args.num_candidates)
+    ]
+
     # mode=base/both 时，先在未加载 LoRA 的状态下生成 Base。
     base_outputs: dict[str, Path] = {}
     if args.mode in ("base", "both"):
-        for index, sample in enumerate(samples):
+        for job_index, (index, candidate_index, sample) in enumerate(candidate_jobs):
             if not sample.image_path.is_file():
                 raise FileNotFoundError(f"输入图片不存在：{sample.image_path}")
 
-            output_name = safe_output_name(sample.sample_id, index)
+            output_name = safe_output_name(sample.sample_id, index, candidate_index)
             output_path = dirs["base"] / output_name
             base_outputs[output_name] = output_path
 
@@ -655,10 +677,12 @@ def run() -> None:
                 height=args.height,
                 width=args.width,
             )
-            sample_seed = args.seed + index if args.increment_seed else args.seed
+            sample_seed = args.seed + candidate_index
+            if args.increment_seed:
+                sample_seed += index * args.num_candidates
 
             print(
-                f"[Base] {index + 1}/{len(samples)} "
+                f"[Base] {job_index + 1}/{len(candidate_jobs)} "
                 f"{sample.image_path.name} -> {out_width}x{out_height}, seed={sample_seed}",
                 flush=True,
             )
@@ -681,6 +705,9 @@ def run() -> None:
                 {
                     "mode": "base",
                     "index": index,
+                    "group_id": sample.sample_id,
+                    "candidate_index": candidate_index,
+                    "num_candidates": args.num_candidates,
                     "sample_id": sample.sample_id,
                     "input_image": str(sample.image_path.resolve()),
                     "output_image": str(output_path),
@@ -693,6 +720,11 @@ def run() -> None:
                     "true_cfg_scale": args.true_cfg_scale,
                     "model_path": str(args.model_path.expanduser().resolve()),
                     "lora_path": None,
+                    "teacher_checkpoint": str(args.model_path.expanduser().resolve()),
+                    "bank_version": args.bank_version,
+                    "reward_vector": None,
+                    "confidence": None,
+                    "selected_as_pseudo_gt": False,
                 },
             )
 
@@ -700,11 +732,11 @@ def run() -> None:
     if args.mode in ("lora", "both"):
         load_lora(pipe, args)
 
-        for index, sample in enumerate(samples):
+        for job_index, (index, candidate_index, sample) in enumerate(candidate_jobs):
             if not sample.image_path.is_file():
                 raise FileNotFoundError(f"输入图片不存在：{sample.image_path}")
 
-            output_name = safe_output_name(sample.sample_id, index)
+            output_name = safe_output_name(sample.sample_id, index, candidate_index)
             output_path = dirs["lora"] / output_name
 
             if should_skip(output_path, args.overwrite):
@@ -718,10 +750,12 @@ def run() -> None:
                     height=args.height,
                     width=args.width,
                 )
-                sample_seed = args.seed + index if args.increment_seed else args.seed
+                sample_seed = args.seed + candidate_index
+                if args.increment_seed:
+                    sample_seed += index * args.num_candidates
 
                 print(
-                    f"[LoRA] {index + 1}/{len(samples)} "
+                    f"[LoRA] {job_index + 1}/{len(candidate_jobs)} "
                     f"{sample.image_path.name} -> {out_width}x{out_height}, seed={sample_seed}",
                     flush=True,
                 )
@@ -744,6 +778,9 @@ def run() -> None:
                     {
                         "mode": "lora",
                         "index": index,
+                        "group_id": sample.sample_id,
+                        "candidate_index": candidate_index,
+                        "num_candidates": args.num_candidates,
                         "sample_id": sample.sample_id,
                         "input_image": str(sample.image_path.resolve()),
                         "output_image": str(output_path),
@@ -756,8 +793,13 @@ def run() -> None:
                         "true_cfg_scale": args.true_cfg_scale,
                         "model_path": str(args.model_path.expanduser().resolve()),
                         "lora_path": str(args.lora_path.expanduser().resolve()),
+                        "teacher_checkpoint": str(args.lora_path.expanduser().resolve()),
                         "adapter_name": args.adapter_name,
                         "lora_scale": args.lora_scale,
+                        "bank_version": args.bank_version,
+                        "reward_vector": None,
+                        "confidence": None,
+                        "selected_as_pseudo_gt": False,
                     },
                 )
 
