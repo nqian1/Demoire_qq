@@ -192,3 +192,7 @@ If four seeds are consistently too similar, first test eight candidates:
 
 Prompt variants should be treated as a separate ablation or stored explicitly
 in metadata, rather than silently mixed into the same seed-only candidate bank.
+
+
+
+/data_mount_162/zhaoqianqian/code/Flow-Factory/saves/qwen-image-edit-plus_lora_grpo_20260803_154554/checkpoints/checkpoint-20/adapter_model.safetensors
