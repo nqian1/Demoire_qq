@@ -194,7 +194,7 @@ Prompt variants should be treated as a separate ablation or stored explicitly
 in metadata, rather than silently mixed into the same seed-only candidate bank.
 
 cd /data_mount_162/zhaoqianqian/code/Flow-Factory
-
+```bash
 cd /data_mount_162/zhaoqianqian/code/Flow-Factory
 
 CUDA_VISIBLE_DEVICES=7 \
@@ -204,3 +204,22 @@ IMAGE_ROOT=/data_mount_162/zhaoqianqian/code/Flow-Factory/dataset/moire/images \
 bash inference/run_qwen_grpo_checkpoint20_test.sh \
   /data_mount_162/zhaoqianqian/code/Flow-Factory/dataset/moire/test.jsonl \
   /data_mount_162/zhaoqianqian/code/Flow-Factory/outputs/grpo_checkpoint20_gpu7_test
+```
+
+PRESERVE_RESOLUTION=1 \
+NUM_CANDIDATES=1 \
+IMAGE_ROOT=/data_mount_162/zhaoqianqian/code/Flow-Factory/dataset/moire/images \
+bash inference/run_qwen_grpo_checkpoint20_test.sh \
+/data_mount_162/zhaoqianqian/code/Flow-Factory/dataset/moire/test.jsonl \
+/data_mount_162/zhaoqianqian/code/Flow-Factory/outputs/grpo_checkpoint20_gpu7_test
+/home/wx1522744/miniforge3/envs/flow-factory-qq/lib/python3.12/site-packages/requests/__init__.py:113: RequestsDependencyWarning: urllib3 (2.7.0) or chardet (7.4.3)/charset_normalizer (3.4.7) doesn't match a supported version!
+  warnings.warn(
+[Info] samples: 101
+[Info] output: /data_mount_162/zhaoqianqian/code/Flow-Factory/outputs/grpo_checkpoint20_gpu7_test
+[Info] steps=20, true_cfg_scale=4.0, seed=42, candidates_per_image=1, resolution=1024, auto_resize=True
+[Load] base model: /data/ckpts/Qwen/Qwen-Image-Edit-2509
+Loading weights: 100%|██████████████████████████████████████████████████████████████████████████████████████████████████| 729/729 [00:00<00:00, 4887.90it/s]
+Loading checkpoint shards: 100%|██████████████████████████████████████████████████████████████████████████████████████████████| 5/5 [00:00<00:00, 48.59it/s]
+Loading pipeline components...: 100%|█████████████████████████████████████████████████████████████████████████████████████████| 6/6 [00:01<00:00,  4.22it/s]
+[Base] 1/101 000600.jpg -> 1280x1728, seed=42
+  5%|██████                                                                                                                  | 1/20 [00:04<01:26,  4.55s/it]
