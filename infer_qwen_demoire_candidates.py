@@ -670,6 +670,55 @@ def should_skip(path: Path, overwrite: bool) -> bool:
     return path.exists() and not overwrite
 
 
+def load_processed_input_sizes(metadata_path: Path) -> dict[str, tuple[int, int]]:
+    """Return the latest recorded input size for every generated output path."""
+    sizes: dict[str, tuple[int, int]] = {}
+    if not metadata_path.is_file():
+        return sizes
+
+    with metadata_path.open("r", encoding="utf-8") as handle:
+        for line_number, raw_line in enumerate(handle, start=1):
+            line = raw_line.strip()
+            if not line:
+                continue
+            try:
+                record = json.loads(line)
+            except json.JSONDecodeError as exc:
+                raise ValueError(
+                    f"Invalid metadata JSON at {metadata_path}:{line_number}: {exc}"
+                ) from exc
+
+            output_value = record.get("output_image")
+            source_width = record.get("source_width")
+            source_height = record.get("source_height")
+            if not output_value or source_width is None or source_height is None:
+                continue
+
+            output_path = Path(output_value).expanduser()
+            if not output_path.is_absolute():
+                output_path = metadata_path.parent / output_path
+            sizes[str(output_path.resolve())] = (
+                int(source_width),
+                int(source_height),
+            )
+
+    return sizes
+
+
+def should_skip_for_input_size(
+    output_path: Path,
+    input_size: tuple[int, int],
+    processed_sizes: dict[str, tuple[int, int]],
+    overwrite: bool,
+) -> tuple[bool, Optional[tuple[int, int]]]:
+    """Skip only when an existing output was generated from the same input size."""
+    if overwrite or not output_path.exists():
+        return False, None
+
+    previous_size = processed_sizes.get(str(output_path.resolve()))
+    return previous_size == input_size, previous_size
+
+
 def run() -> None:
     args = parse_args()
 
@@ -691,6 +740,8 @@ def run() -> None:
     output_dir = args.output_dir.expanduser().resolve()
     dirs = ensure_dirs(output_dir, args.mode, args.save_comparison)
     metadata_path = output_dir / "metadata.jsonl"
+    processed_sizes = load_processed_input_sizes(metadata_path)
+    regenerated_outputs: set[str] = set()
 
     print(f"[Info] samples: {len(samples)}", flush=True)
     print(f"[Info] output: {output_dir}", flush=True)
@@ -720,9 +771,24 @@ def run() -> None:
             output_path = dirs["base"] / output_name
             base_outputs[output_name] = output_path
 
-            if should_skip(output_path, args.overwrite):
+            with Image.open(sample.image_path) as source_image:
+                current_input_size = source_image.size
+
+            skip_output, previous_input_size = should_skip_for_input_size(
+                output_path=output_path,
+                input_size=current_input_size,
+                processed_sizes=processed_sizes,
+                overwrite=args.overwrite,
+            )
+            if skip_output:
                 print(f"[Skip][Base] {output_path}", flush=True)
                 continue
+            if output_path.exists() and not args.overwrite:
+                print(
+                    f"[Regenerate][Base] input size changed or is unknown: "
+                    f"{previous_input_size} -> {current_input_size}; overwrite {output_path}",
+                    flush=True,
+                )
 
             image = Image.open(sample.image_path).convert("RGB")
             source_width, source_height = image.size
@@ -758,6 +824,7 @@ def run() -> None:
             if crop_box is not None:
                 result = result.crop(crop_box)
             result.save(output_path)
+            regenerated_outputs.add(output_name)
 
             write_metadata(
                 metadata_path,
@@ -803,9 +870,24 @@ def run() -> None:
             output_name = safe_output_name(sample.sample_id, index, candidate_index)
             output_path = dirs["lora"] / output_name
 
-            if should_skip(output_path, args.overwrite):
+            with Image.open(sample.image_path) as source_image:
+                current_input_size = source_image.size
+
+            skip_output, previous_input_size = should_skip_for_input_size(
+                output_path=output_path,
+                input_size=current_input_size,
+                processed_sizes=processed_sizes,
+                overwrite=args.overwrite,
+            )
+            if skip_output:
                 print(f"[Skip][LoRA] {output_path}", flush=True)
             else:
+                if output_path.exists() and not args.overwrite:
+                    print(
+                        f"[Regenerate][LoRA] input size changed or is unknown: "
+                        f"{previous_input_size} -> {current_input_size}; overwrite {output_path}",
+                        flush=True,
+                    )
                 image = Image.open(sample.image_path).convert("RGB")
                 source_width, source_height = image.size
                 generation_image, out_width, out_height, crop_box = prepare_generation_image(
@@ -840,6 +922,7 @@ def run() -> None:
                 if crop_box is not None:
                     result = result.crop(crop_box)
                 result.save(output_path)
+                regenerated_outputs.add(output_name)
 
                 write_metadata(
                     metadata_path,
@@ -884,7 +967,11 @@ def run() -> None:
                 if (
                     base_path.is_file()
                     and lora_path.is_file()
-                    and not should_skip(comparison_path, args.overwrite)
+                    and (
+                        args.overwrite
+                        or output_name in regenerated_outputs
+                        or not comparison_path.exists()
+                    )
                 ):
                     input_image = Image.open(sample.image_path).convert("RGB")
                     base_image = Image.open(base_path).convert("RGB")
