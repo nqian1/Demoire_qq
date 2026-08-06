@@ -193,6 +193,24 @@ If four seeds are consistently too similar, first test eight candidates:
 Prompt variants should be treated as a separate ablation or stored explicitly
 in metadata, rather than silently mixed into the same seed-only candidate bank.
 
+cd /data_mount_162/zhaoqianqian/code/Flow-Factory
+
+NUM_CANDIDATES=1 \
+bash inference/run_qwen_grpo_checkpoint20_test.sh \
+  /你的路径/test_moire.jpg
 
 
-/data_mount_162/zhaoqianqian/code/Flow-Factory/saves/qwen-image-edit-plus_lora_grpo_20260803_154554/checkpoints/checkpoint-20/adapter_model.safetensors
+  cd /data_mount_162/zhaoqianqian/code/Flow-Factory
+
+IMAGE_ROOT=/测试集图片目录 \
+NUM_CANDIDATES=4 \
+bash inference/run_qwen_grpo_checkpoint20_test.sh \
+  /测试集路径/test.jsonl \
+  outputs/grpo_checkpoint20_testset
+
+
+  PRESERVE_RESOLUTION=1 \
+NUM_CANDIDATES=1 \
+bash inference/run_qwen_grpo_checkpoint20_test.sh \
+  /你的路径/test_moire.jpg \
+  outputs/grpo_checkpoint20_full_resolution
