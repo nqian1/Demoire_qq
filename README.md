@@ -195,22 +195,12 @@ in metadata, rather than silently mixed into the same seed-only candidate bank.
 
 cd /data_mount_162/zhaoqianqian/code/Flow-Factory
 
+cd /data_mount_162/zhaoqianqian/code/Flow-Factory
+
+CUDA_VISIBLE_DEVICES=7 \
+PRESERVE_RESOLUTION=1 \
 NUM_CANDIDATES=1 \
+IMAGE_ROOT=/data_mount_162/zhaoqianqian/code/Flow-Factory/dataset/moire/images \
 bash inference/run_qwen_grpo_checkpoint20_test.sh \
-  /你的路径/test_moire.jpg
-
-
-  cd /data_mount_162/zhaoqianqian/code/Flow-Factory
-
-IMAGE_ROOT=/测试集图片目录 \
-NUM_CANDIDATES=4 \
-bash inference/run_qwen_grpo_checkpoint20_test.sh \
-  /测试集路径/test.jsonl \
-  outputs/grpo_checkpoint20_testset
-
-
-  PRESERVE_RESOLUTION=1 \
-NUM_CANDIDATES=1 \
-bash inference/run_qwen_grpo_checkpoint20_test.sh \
-  /你的路径/test_moire.jpg \
-  outputs/grpo_checkpoint20_full_resolution
+  /data_mount_162/zhaoqianqian/code/Flow-Factory/dataset/moire/test.jsonl \
+  /data_mount_162/zhaoqianqian/code/Flow-Factory/outputs/grpo_checkpoint20_gpu7_test
