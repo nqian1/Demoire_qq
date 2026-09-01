@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="复杂文字场景评测：面向 T2I 文字生成的四维评估与奖励函数方案。">
+  <title>复杂文字场景评测</title>
+  <style>
+    :root { --ink:#171717; --muted:#666; --line:#222; --soft-line:#d8d8d8; --paper:#fff; --soft:#f5f5f5; --soft-2:#fafafa; }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { margin:0; background:var(--paper); color:var(--ink); font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",Arial,sans-serif; font-size:14px; line-height:1.65; }
+    a { color:inherit; text-decoration-thickness:1px; text-underline-offset:2px; }
+    code,pre,.formula { font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace; }
+    .page { width:min(1080px,calc(100% - 32px)); margin:0 auto; padding:34px 0 52px; }
+    header { padding-bottom:18px; border-bottom:2px solid var(--line); }
+    h1 { margin:0; font-size:26px; line-height:1.25; letter-spacing:.01em; font-weight:700; }
+    .subtitle { margin:6px 0 0; color:var(--muted); font-size:13px; }
+    section { padding:32px 0; border-bottom:1px solid var(--soft-line); }
+    section:last-of-type { border-bottom:0; }
+    .section-title { margin:0 0 18px; font-size:18px; line-height:1.35; font-weight:700; }
+    .section-note { margin:-10px 0 18px; color:var(--muted); font-size:12px; }
+    .flowchart { border:1.5px solid var(--line); padding:22px; background:#fff; }
+    .flow-row { display:grid; grid-template-columns:1fr 34px 1.25fr 34px 1.35fr; align-items:stretch; gap:6px; }
+    .flow-row + .flow-row { margin-top:12px; }
+    .flow-box { min-height:92px; border:1.5px solid var(--line); padding:13px 14px; background:#fff; }
+    .flow-box.gray { background:var(--soft); }
+    .flow-label { display:block; margin-bottom:5px; color:var(--muted); font-size:10px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; }
+    .flow-box strong { display:block; font-size:14px; line-height:1.35; }
+    .flow-box p { margin:5px 0 0; color:#555; font-size:11px; line-height:1.5; }
+    .arrow { display:grid; place-items:center; font-size:20px; color:var(--ink); }
+    .merge-arrow { height:34px; display:grid; place-items:center; font-size:19px; }
+    .flow-final { display:grid; grid-template-columns:1.15fr 34px 1fr 34px 1fr; align-items:stretch; gap:6px; }
+    .diagram-scroll { overflow-x:auto; }
+    .flow-svg { display:block; width:100%; min-width:760px; height:auto; }
+    .flow-svg .node { fill:#fff; stroke:#222; stroke-width:1.5; }
+    .flow-svg .node.gray { fill:#f5f5f5; }
+    .flow-svg .edge { fill:none; stroke:#222; stroke-width:1.5; marker-end:url(#flow-arrow); }
+    .flow-svg .node-title { font-size:14px; font-weight:700; text-anchor:middle; fill:#171717; }
+    .flow-svg .node-sub { font-size:10px; text-anchor:middle; fill:#555; }
+    .flow-svg .edge-label { font-size:10px; fill:#555; }
+    .citation-audit { margin-top:9px; padding-top:8px; border-top:1px solid #bbb; }
+    .caption { margin:10px 0 0; padding-left:12px; border-left:2px solid var(--line); color:#555; font-size:11px; line-height:1.75; }
+    .caption strong { color:var(--ink); }
+    .source-list { margin:7px 0 0; padding-left:18px; }
+    .source-list li + li { margin-top:3px; }
+    .dimension { display:grid; grid-template-columns:230px minmax(0,1fr); gap:28px; padding:26px 0; border-top:1.5px solid var(--line); }
+    .dimension:last-child { border-bottom:1.5px solid var(--line); }
+    .dimension-index { color:var(--muted); font-size:11px; font-weight:700; }
+    .dimension h3 { margin:5px 0 7px; font-size:17px; line-height:1.4; }
+    .dimension-summary { margin:0; color:#555; font-size:12px; }
+    .weight-tag { display:inline-block; margin-top:13px; border:1px solid var(--line); padding:3px 8px; font-size:11px; font-weight:700; background:#fff; }
+    .detail-grid { display:grid; grid-template-columns:120px minmax(0,1fr); border-top:1px solid var(--soft-line); }
+    .detail-grid>div { padding:11px 10px; border-bottom:1px solid var(--soft-line); }
+    .detail-grid .label { padding-left:0; color:#555; font-size:11px; font-weight:700; }
+    .detail-grid .value { padding-right:0; font-size:12px; }
+    .detail-grid ul,.detail-grid ol { margin:0; padding-left:18px; }
+    .detail-grid li + li { margin-top:4px; }
+    .formula { display:block; margin:7px 0; border:1px solid var(--line); background:var(--soft-2); padding:9px 11px; overflow-x:auto; color:var(--ink); font-size:11px; white-space:nowrap; }
+    .important { margin-top:9px; border-left:3px solid var(--line); padding:7px 10px; background:var(--soft); font-size:11px; }
+    .vqa-example { margin-top:8px; border:1px solid var(--soft-line); background:var(--soft-2); padding:10px 12px; }
+    .vqa-example b { display:block; margin-bottom:4px; font-size:11px; }
+    .vqa-example p { margin:0; font-size:11px; color:#444; }
+    .score-layout { display:grid; grid-template-columns:1.1fr .9fr; gap:20px; }
+    .score-box { border:1.5px solid var(--line); padding:18px; }
+    .score-box h3 { margin:0 0 10px; font-size:14px; }
+    .score-box p { margin:7px 0 0; color:#555; font-size:11px; }
+    .weight-bars { display:grid; gap:9px; margin-top:14px; }
+    .bar-row { display:grid; grid-template-columns:96px 1fr 40px; gap:9px; align-items:center; font-size:11px; }
+    .bar-track { height:12px; border:1px solid var(--line); background:#fff; }
+    .bar-fill { height:100%; background:#333; }
+    .bar-row span:last-child { text-align:right; }
+    .rules { margin:0; padding-left:18px; font-size:12px; }
+    .rules li + li { margin-top:7px; }
+    .case { border:1.5px solid var(--line); background:#fff; }
+    .case + .case { margin-top:24px; }
+    .case-head { display:flex; justify-content:space-between; align-items:baseline; gap:15px; padding:12px 14px; border-bottom:1.5px solid var(--line); background:var(--soft); }
+    .case-head h3 { margin:0; font-size:14px; }
+    .case-head span { color:#555; font-size:11px; }
+    .case-grid { display:grid; grid-template-columns:minmax(0,1.08fr) minmax(340px,.92fr); }
+    .case-image { position:relative; min-height:430px; overflow:hidden; border-right:1.5px solid var(--line); background:#eee; }
+    .case-image img { display:block; width:100%; height:100%; min-height:430px; object-fit:cover; }
+    .bbox { position:absolute; border:2px solid #fff; box-shadow:0 0 0 1px #111; }
+    .bbox::before { content:attr(data-label); position:absolute; left:-1px; bottom:calc(100% + 3px); padding:2px 5px; background:#111; color:#fff; font-size:9px; white-space:nowrap; }
+    .case-body { padding:16px; }
+    .case-prompt { margin:0 0 13px; font-size:11px; color:#444; }
+    .case-table { width:100%; border-collapse:collapse; font-size:11px; }
+    .case-table th,.case-table td { padding:8px 7px; border-bottom:1px solid var(--soft-line); text-align:left; vertical-align:top; }
+    .case-table th { background:var(--soft-2); color:#555; font-weight:700; }
+    .case-table td:last-child,.case-table th:last-child { text-align:right; white-space:nowrap; }
+    .case-total { display:flex; align-items:baseline; justify-content:space-between; gap:12px; margin-top:14px; border-top:1.5px solid var(--line); padding-top:11px; }
+    .case-total b { font-size:20px; }
+    .case-observation { margin:10px 0 0; color:#444; font-size:11px; }
+    .test-note { margin:12px 0 0; color:var(--muted); font-size:11px; }
+    footer { margin-top:24px; padding-top:12px; border-top:2px solid var(--line); color:var(--muted); font-size:10px; }
+    @media(max-width:820px) { .dimension,.score-layout,.case-grid { grid-template-columns:1fr; } .dimension { gap:16px; } .case-image { border-right:0; border-bottom:1.5px solid var(--line); } }
+    @media(max-width:650px) { .page { width:min(100% - 24px,1080px); padding-top:22px; } h1 { font-size:22px; } .flowchart { padding:13px; } .flow-row,.flow-final { grid-template-columns:1fr; } .arrow { height:24px; transform:rotate(90deg); } .detail-grid { grid-template-columns:96px minmax(0,1fr); } .case-image,.case-image img { min-height:300px; } .case-head { align-items:flex-start; flex-direction:column; gap:3px; } }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <h1>复杂文字场景评测</h1>
+      <p class="subtitle">T2I 文字生成的检测、局部评估、全局汇总与奖励函数方案</p>
+    </header>
+
+    <main>
+      <section>
+        <h2 class="section-title">评测框图</h2>
+        <div class="flowchart diagram-scroll" aria-label="T2I 复杂文字场景评测框图">
+          <svg class="flow-svg" viewBox="0 0 960 650" role="img" aria-labelledby="flow-title flow-desc">
+            <title id="flow-title">复杂文字场景评测流程</title>
+            <desc id="flow-desc">Prompt 和 T2I 结果分别经过文本检测与 Prompt 解析，形成文字裁切区域和目标实例，匹配后进入四个评估维度并汇总总分。</desc>
+            <defs>
+              <marker id="flow-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="strokeWidth">
+                <path d="M0,0 L8,4 L0,8 Z" fill="#222"></path>
+              </marker>
+            </defs>
+
+            <path class="edge" d="M480 70 V90 H240 V110"></path>
+            <path class="edge" d="M480 70 V90 H720 V110"></path>
+            <path class="edge" d="M240 175 V220"></path>
+            <path class="edge" d="M720 175 V220"></path>
+            <path class="edge" d="M240 285 V310 H420 V330"></path>
+            <path class="edge" d="M720 285 V310 H540 V330"></path>
+            <path class="edge" d="M480 400 V440 H125 V475"></path>
+            <path class="edge" d="M480 400 V440 H365 V475"></path>
+            <path class="edge" d="M480 400 V440 H605 V475"></path>
+            <path class="edge" d="M480 400 V440 H840 V475"></path>
+            <path class="edge" d="M630 42 H930 V450 H900 V475"></path>
+            <text class="edge-label" x="875" y="435">Full image</text>
+            <path class="edge" d="M125 535 V565 H420 V585"></path>
+            <path class="edge" d="M365 535 V565 H460 V585"></path>
+            <path class="edge" d="M605 535 V565 H500 V585"></path>
+            <path class="edge" d="M840 535 V565 H540 V585"></path>
+
+            <rect class="node" x="330" y="15" width="300" height="55"></rect>
+            <text class="node-title" x="480" y="39">输入：Prompt + T2I 生图结果</text>
+            <text class="node-sub" x="480" y="57">保留模型版本、seed 与原始 Prompt</text>
+
+            <rect class="node gray" x="70" y="110" width="340" height="65"></rect>
+            <text class="node-title" x="240" y="137">Text Detector</text>
+            <text class="node-sub" x="240" y="157">PP-OCRv6_medium_det / EdgeText</text>
+
+            <rect class="node gray" x="550" y="110" width="340" height="65"></rect>
+            <text class="node-title" x="720" y="137">Prompt Text Parser</text>
+            <text class="node-sub" x="720" y="157">Qwen3.8-27B → structured JSON</text>
+
+            <rect class="node" x="70" y="220" width="340" height="65"></rect>
+            <text class="node-title" x="240" y="247">Crop 字符区域 {I_crop}</text>
+            <text class="node-sub" x="240" y="267">polygon / mask / crop / OCR N-best</text>
+
+            <rect class="node" x="550" y="220" width="340" height="65"></rect>
+            <text class="node-title" x="720" y="247">目标文本实例 {T_target}</text>
+            <text class="node-sub" x="720" y="267">content / carrier / region / style / order</text>
+
+            <rect class="node gray" x="300" y="330" width="360" height="70"></rect>
+            <text class="node-title" x="480" y="358">实例匹配 &amp; 阅读顺序映射</text>
+            <text class="node-sub" x="480" y="379">Hungarian assignment：CER + region + carrier</text>
+
+            <rect class="node" x="15" y="475" width="220" height="60"></rect>
+            <text class="node-title" x="125" y="501">1. 字形渲染与质量</text>
+            <text class="node-sub" x="125" y="520">blind crop / stroke / edge</text>
+
+            <rect class="node" x="255" y="475" width="220" height="60"></rect>
+            <text class="node-title" x="365" y="501">2. 文本内容对齐</text>
+            <text class="node-sub" x="365" y="520">local CER → global aggregate</text>
+
+            <rect class="node" x="495" y="475" width="220" height="60"></rect>
+            <text class="node-title" x="605" y="501">3. Layout 与样式</text>
+            <text class="node-sub" x="605" y="520">geometry / color / hierarchy</text>
+
+            <rect class="node" x="735" y="475" width="210" height="60"></rect>
+            <text class="node-title" x="840" y="501">4. 场景语义与逻辑</text>
+            <text class="node-sub" x="840" y="520">carrier / perspective / VQA</text>
+
+            <rect class="node gray" x="330" y="585" width="300" height="55"></rect>
+            <text class="node-title" x="480" y="610">综合加权打分（Total Score）</text>
+            <text class="node-sub" x="480" y="628">coverage gate + errors + confidence</text>
+          </svg>
+        </div>
+        <div class="caption">
+          <strong>主要技术组件与引用（核对日期：2026-08-22）</strong>
+          <ul class="source-list">
+            <li><b>Prompt Parser / VQA：</b><a href="https://github.com/QwenLM/Qwen3.8" target="_blank" rel="noreferrer">Qwen3.8 官方仓库</a>列出的开放模型是 <code>Qwen3.8-27B</code> 与 <code>Qwen3.8-2.4T-A95B</code>。Qwen3.8 是统一视觉—语言模型，不使用 <code>Qwen3.8-VL</code> 或 <code>Qwen3.8-Text-Encoder</code> 作为官方模型名。</li>
+            <li><b>Text Detector / OCR：</b>生产默认采用 <a href="https://github.com/PaddlePaddle/PaddleOCR/blob/main/docs/version3.x/module_usage/text_detection.md" target="_blank" rel="noreferrer">PP-OCRv6 Text Detection</a>；曲线文字研究分支采用 <a href="https://arxiv.org/abs/2504.04001" target="_blank" rel="noreferrer">EdgeText (2025)</a>；像素级检测对照采用 <a href="https://openaccess.thecvf.com/content/CVPR2024/html/Zheng_Kernel_Adaptive_Convolution_for_Scene_Text_Detection_via_Distance_Map_CVPR_2024_paper.html" target="_blank" rel="noreferrer">KAC, CVPR 2024</a>。</li>
+            <li><b>层级 Layout：</b><a href="https://openaccess.thecvf.com/content/CVPR2024/html/Liang_LayoutFormer_Hierarchical_Text_Detection_Towards_Scene_Text_Understanding_CVPR_2024_paper.html" target="_blank" rel="noreferrer">LayoutFormer, CVPR 2024</a> 与 <a href="https://openaccess.thecvf.com/content/CVPR2024/html/Bi_Text_Grouping_Adapter_Adapting_Pre-trained_Text_Detector_for_Layout_Analysis_CVPR_2024_paper.html" target="_blank" rel="noreferrer">Text Grouping Adapter, CVPR 2024</a>。</li>
+            <li><b>历史对照：</b><a href="https://arxiv.org/abs/1911.08947" target="_blank" rel="noreferrer">DBNet, AAAI 2020</a>、<a href="https://github.com/ViTAE-Transformer/DeepSolo" target="_blank" rel="noreferrer">DeepSolo, CVPR 2023</a>、<a href="https://github.com/ymy-k/DPText-DETR" target="_blank" rel="noreferrer">DPText-DETR, AAAI 2023</a>。后二者不是“近两年”工作，因此不再作为新版默认推荐。</li>
+          </ul>
+          <div class="citation-audit"><b>对 text_validation2.html 的事实修正：</b><code>Qwen3.8-72B</code>、<code>Qwen3.8-Text-Encoder</code>、<code>Qwen3.8-VL</code> 均不是当前官方模型名；其 Qwen 链接指向旧仓库。另一个错误是把 <a href="https://arxiv.org/abs/2410.12628" target="_blank" rel="noreferrer">DocLayout-YOLO</a> 标成“CVPR 2024”：官方仓库给出的引用是 arXiv:2410.12628，且它面向文档版面分析，不适合作为自然场景文字 Layout 的默认模型。</div>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="section-title">四个评估维度</h2>
+        <p class="section-note">四个维度按上下顺序展开。每个维度都明确输入、计算方法和输出，避免只给模型名称而没有可执行细节。</p>
+
+        <article class="dimension">
+          <div><span class="dimension-index">01</span><h3>字形渲染与质量评估</h3><p class="dimension-summary">判断笔画是否清楚、完整、连贯；不负责判断内容是否为目标文字。</p><span class="weight-tag">建议权重 25%</span></div>
+          <div class="detail-grid">
+            <div class="label">输入</div><div class="value">每个文字实例的 crop、text mask、2× 放大图和外围背景环带。对视觉评分器隐藏原始 Prompt 与目标字符串。</div>
+            <div class="label">底层方法</div><div class="value"><ul><li><b>Edge clarity：</b>在 mask 边界带上计算梯度强度、Laplacian 方差和重影比例。</li><li><b>Stroke integrity：</b>对二值 mask 骨架化，统计异常断点、局部缺口、短小伪分支和粘连区域。</li><li><b>Foreground contrast：</b>比较文字内部与外侧背景环带的 Lab 明度/色度距离。</li><li><b>Blind visual judge：</b>Qwen3.8-27B 只看 crop，按固定 rubric 返回 blur / broken / merged / extra-stroke；不得看到目标文本。</li></ul></div>
+            <div class="label">局部计算</div><div class="value"><span class="formula">G_i = 0.30·sharp_i + 0.30·stroke_i + 0.20·contrast_i + 0.20·topology_i</span>每项先在“语言 × 字高 × 透视角”桶内校准到 [0,100]。图像级 D1 采用文字像素面积加权平均，但单个必需实例不得因面积小而被忽略。</div>
+            <div class="label">输出</div><div class="value"><code>{glyph_score, defect_type, severity, char_region, confidence}</code></div>
+            <div class="label">注意</div><div class="value">OCR confidence 只能作为辅助证据，不能直接等同字形质量；否则“内容易猜但笔画已坏”的文字会被错误给高分。</div>
+          </div>
+        </article>
+
+        <article class="dimension">
+          <div><span class="dimension-index">02</span><h3>文本内容对齐度评估</h3><p class="dimension-summary">目标文本先从用户 Prompt 中抽取；生成图只负责提供观测，不允许反向定义 ground truth。</p><span class="weight-tag">建议权重 45%</span></div>
+          <div class="detail-grid">
+            <div class="label">正确顺序</div><div class="value"><ol><li>Qwen3.8-27B 从 Prompt 抽取目标实例：<code>content / carrier / region / style / order</code>。</li><li>Text Detector 对 T2I 结果切出每个文字片段；OCR 对每个 crop 独立识别。</li><li>将目标实例与 crop 做一对一匹配，而不是把整图 OCR 拼成一个长字符串。</li><li>先计算局部错字、漏字、多字和顺序错误，再汇总为 global score。</li></ol><div class="important"><b>结论：</b>不是“Prompt 抽取”和“局部 crop 计算”二选一。Prompt 提供目标文本，crop 提供观测文本；二者匹配后先局部、再全局。</div></div>
+            <div class="label">实例匹配</div><div class="value">对目标 <code>t_j</code> 与候选 <code>o_i</code> 构造成本：<span class="formula">cost(i,j) = 0.60·CER(o_i,t_j) + 0.20·region_mismatch + 0.20·carrier_mismatch</span>通过 Hungarian assignment 得到匹配；未匹配目标记 missing，未匹配候选记 extra text。载体与区域约束仅在 Prompt 明确给出时启用。</div>
+            <div class="label">局部与全局</div><div class="value"><span class="formula">local_char_i = max(0, 1 − (S_i + D_i + I_i) / N_i)</span><span class="formula">D2 = 100·(0.50·micro_char_acc + 0.30·exact_instance_rate + 0.20·instance_F1) − P_extra</span><code>micro_char_acc</code> 按字符总量统计；<code>exact_instance_rate</code> 防止长文本掩盖短标题错误；<code>instance_F1</code> 处理整段缺失和额外文字。</div>
+            <div class="label">归一化</div><div class="value">默认按 Unicode grapheme cluster 对齐。仅忽略 Prompt 允许的空格/换行；数字、大小写、标点和专有名词默认严格匹配。</div>
+            <div class="label">输出</div><div class="value"><code>{target_id, crop_id, ocr_nbest, S/D/I, error_spans, missing, extra, content_score}</code></div>
+          </div>
+        </article>
+
+        <article class="dimension">
+          <div><span class="dimension-index">03</span><h3>Layout 与样式一致性评估</h3><p class="dimension-summary">硬约束用几何和颜色直接计算；只有“复古、手写、浮雕”等软风格才交给视觉模型。</p><span class="weight-tag">建议权重 15%</span></div>
+          <div class="detail-grid">
+            <div class="label">Layout 来源</div><div class="value">检测结果使用 <a href="https://openaccess.thecvf.com/content/CVPR2024/html/Liang_LayoutFormer_Hierarchical_Text_Detection_Towards_Scene_Text_Understanding_CVPR_2024_paper.html" target="_blank" rel="noreferrer">LayoutFormer（CVPR 2024）</a> 的 word / line / paragraph 层级思想；若已有检测器，可参考 <a href="https://openaccess.thecvf.com/content/CVPR2024/html/Bi_Text_Grouping_Adapter_Adapting_Pre-trained_Text_Detector_for_Layout_Analysis_CVPR_2024_paper.html" target="_blank" rel="noreferrer">Text Grouping Adapter（CVPR 2024）</a> 做行与段落分组。</div>
+            <div class="label">几何计算</div><div class="value"><ul><li>将 polygon 坐标除以图像宽高，得到归一化位置、大小和行基线。</li><li>“中央/上方/下方”等区域约束按 centroid 与预设区域计算命中率。</li><li>“A 在 B 上方”用相对中心坐标和最小间隔判断；阅读顺序用 Kendall-τ。</li><li>标题/副标题层级用字高比、面积比和对齐误差计算，不要求固定像素坐标。</li></ul></div>
+            <div class="label">颜色计算</div><div class="value">不直接使用整张 crop 的 Color Histogram。先将 text mask 向内腐蚀 1–2 px，取文字前景像素的 Lab 中位数；再与 Prompt 中显式颜色对应的校准色域比较。<span class="formula">S_color = exp(−ΔE00(median_Lab(text), target_Lab) / τ_color)</span>对渐变/多色文字，将前景像素聚成最多 3 个 Lab 色簇，再用 Earth Mover's Distance 比较色彩分布。背景像素不得混入文字颜色统计。</div>
+            <div class="label">风格计算</div><div class="value"><ul><li>有参考图：使用 <a href="https://github.com/QwenLM/Qwen3-VL-Embedding" target="_blank" rel="noreferrer">Qwen3-VL-Embedding</a> 比较“文字 crop ↔ 参考文字 crop”，只作为相对相似度。</li><li>无参考图：Qwen3.8-27B 按固定 rubric 判定 serif / sans / handwriting / embossed / neon 等离散属性。</li><li>不建议用原始 CLIP cosine 直接当绝对分数，因为内容语义、背景和文字风格会混入同一 embedding。</li></ul></div>
+            <div class="label">汇总</div><div class="value"><span class="formula">D3 = 0.45·geometry + 0.20·reading_order + 0.20·color + 0.15·style</span>Prompt 未指定的颜色、字体或绝对位置不参与扣分。</div>
+            <div class="label">输出</div><div class="value"><code>{constraint_id, expected, measured, tolerance, pass, layout_score}</code></div>
+          </div>
+        </article>
+
+        <article class="dimension">
+          <div><span class="dimension-index">04</span><h3>场景语义与逻辑融合评估</h3><p class="dimension-summary">评估文字是否真正附着在指定载体上，并符合载体平面、透视、遮挡、光照和材质逻辑。</p><span class="weight-tag">建议权重 15%</span></div>
+          <div class="detail-grid">
+            <div class="label">模型选择</div><div class="value">默认使用 <a href="https://github.com/QwenLM/Qwen3.8" target="_blank" rel="noreferrer">Qwen3.8-27B</a> 的统一视觉语言能力，输入整图、文字 polygon、载体 crop 和 target spec。Qwen3.8-2.4T-A95B 仅用于少量难例的离线复核。</div>
+            <div class="label">载体定位</div><div class="value">先让模型根据 <code>carrier</code> 返回载体 bbox/polygon，再计算文字区域是否落在载体内部：<span class="formula">S_carrier = area(text_polygon ∩ carrier_polygon) / area(text_polygon)</span>对“路牌上、杯身上、墙面上”这类约束，载体未定位成功时不允许仅凭整图语义给高分。</div>
+            <div class="label">透视与遮挡</div><div class="value">对近似平面载体拟合四边形或 homography，比较文字上下基线与载体消失方向；用归一化重投影残差得到 <code>S_perspective</code>。再检查文字与载体前景的遮挡顺序，避免文字漂浮在遮挡物上方。</div>
+            <div class="label">光照与材质</div><div class="value">在文字边缘内外采样局部亮度、色温、噪声与纹理频谱；判断文字是否共享载体的阴影、反光、印刷磨损或曲面变形。确定性统计与 Qwen3.8 rubric 各占一半。</div>
+            <div class="label">VQA 例 1</div><div class="value"><div class="vqa-example"><b>路牌载体问题</b><p>“目标文字实例 t3 应印在道路标牌上。请返回：①标牌 bbox；②文字 polygon 是否完全位于标牌平面内；③文字基线是否与标牌透视方向一致。只输出 JSON，并给出 evidence coordinates。”</p></div></div>
+            <div class="label">VQA 例 2</div><div class="value"><div class="vqa-example"><b>材质与光照问题</b><p>“观察文字 crop 及其扩大 2× 的载体区域。文字是否共享载体的照明、反射和表面纹理？分别按 0/1/2 评分，并指出导致扣分的局部坐标；不要判断文字拼写。”</p></div></div>
+            <div class="label">交叉推理</div><div class="value">问题由 target spec 的 carrier / relation 字段模板化生成，不让模型自由发散。每题以整图和局部载体 crop 各问一次；答案不一致时降低 confidence 或送入大模型复核，而不是简单平均。</div>
+            <div class="label">汇总</div><div class="value"><span class="formula">D4 = 0.35·carrier + 0.25·perspective + 0.20·lighting_material + 0.20·VQA_consistency</span></div>
+            <div class="label">输出</div><div class="value"><code>{carrier_bbox, inside_ratio, reprojection_error, occlusion, lighting, evidence, scene_score, confidence}</code></div>
+          </div>
+        </article>
+      </section>
+
+      <section>
+        <h2 class="section-title">总分计算</h2>
+        <div class="score-layout">
+          <div class="score-box">
+            <h3>基础权重与覆盖率门控</h3>
+            <span class="formula">S_raw = 0.25·D1 + 0.45·D2 + 0.15·D3 + 0.15·D4</span>
+            <span class="formula">g_cov = √(instance_F1 · char_recall)</span>
+            <span class="formula">S_total = clip(g_cov · S_raw − P_extra − P_illegal, 0, 100)</span>
+            <p>D1–D4 均为 [0,100]。覆盖率采用乘法门控，避免文字缺失后仍靠布局和场景获得高分。权重是 MVP 起点，后续应在人工标注集上拟合。</p>
+            <div class="weight-bars">
+              <div class="bar-row"><span>D1 字形</span><div class="bar-track"><div class="bar-fill" style="width:25%"></div></div><span>25%</span></div>
+              <div class="bar-row"><span>D2 内容</span><div class="bar-track"><div class="bar-fill" style="width:45%"></div></div><span>45%</span></div>
+              <div class="bar-row"><span>D3 Layout</span><div class="bar-track"><div class="bar-fill" style="width:15%"></div></div><span>15%</span></div>
+              <div class="bar-row"><span>D4 场景</span><div class="bar-track"><div class="bar-fill" style="width:15%"></div></div><span>15%</span></div>
+            </div>
+          </div>
+          <div class="score-box"><h3>硬规则</h3><ul class="rules"><li>全部目标实例 exact match = 0：总分上限 35。</li><li>任一 required 实例完全缺失：总分上限 55；所有文字缺失：上限 20。</li><li>未匹配额外文字按面积和字符数罚分，防止模型重复书写目标词。</li><li>OCR/VQA 分歧超过校准阈值：输出 abstain，不作为在线 RL 奖励。</li><li>训练使用按语言、字数、最小字高和透视角分桶后的稳健归一化分；评测保留原始总分。</li></ul></div>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="section-title">两个 Case 的四维规则走查</h2>
+        <p class="section-note">以下图片由图像生成模型构建。分数是按照上面的规则进行的人工 dry-run，用于检查指标方向和局部/全局汇总是否合理，不冒充已部署评测器的自动跑分。</p>
+        <article class="case">
+          <div class="case-head"><h3>Case A：三处文字均正确</h3><span>正例 / 中英混排 / 海报 + 路牌载体</span></div>
+          <div class="case-grid">
+            <div class="case-image"><img src="t2i_text_rm_assets/poster-positive.png" alt="包含未来已来、2026 AI 峰会和 NO PARKING 的复古海报"><span class="bbox" data-label="t1 未来已来" style="left:21%;top:29%;width:36%;height:20%"></span><span class="bbox" data-label="t2 2026 AI 峰会" style="left:27%;top:48%;width:27%;height:8%"></span><span class="bbox" data-label="t3 NO PARKING" style="left:77%;top:32%;width:10%;height:16%"></span></div>
+            <div class="case-body"><p class="case-prompt"><b>目标：</b>中央金色“未来已来”；下方“2026 AI 峰会”；背景路牌“NO PARKING”。</p><table class="case-table"><thead><tr><th>维度</th><th>局部证据与结果</th><th>分数</th></tr></thead><tbody><tr><td>D1 字形</td><td>三处边缘清楚，无明显断裂/粘连；小号路牌文字略低于海报清晰度。</td><td>94</td></tr><tr><td>D2 内容</td><td>3/3 实例 exact match；字符级 S/D/I 均为 0；无额外文字。</td><td>100</td></tr><tr><td>D3 Layout</td><td>标题居中、副标题位于下方；金色标题与层级比满足 Prompt。</td><td>93</td></tr><tr><td>D4 场景</td><td>“NO PARKING”位于路牌平面内；海报与路牌透视、照明关系基本合理。</td><td>91</td></tr></tbody></table><div class="case-total"><span>coverage gate = 1.000</span><b>96.1 / 100</b></div><p class="case-observation">计算：0.25×94 + 0.45×100 + 0.15×93 + 0.15×91 = 96.1。</p></div>
+          </div>
+        </article>
+        <article class="case">
+          <div class="case-head"><h3>Case B：漏字 + 局部笔画粘连</h3><span>受控反例 / 仅改变文字缺陷 / 布局和场景保持不变</span></div>
+          <div class="case-grid">
+            <div class="case-image"><img src="t2i_text_rm_assets/poster-controlled-negative.png" alt="NO PARKING 漏字且未来已来的未字存在笔画缺陷的受控反例"><span class="bbox" data-label="D1 未：笔画粘连" style="left:21%;top:29%;width:36%;height:20%"></span><span class="bbox" data-label="t2 正确" style="left:27%;top:48%;width:27%;height:8%"></span><span class="bbox" data-label="D2 NO PARKNG" style="left:77%;top:32%;width:10%;height:16%"></span></div>
+            <div class="case-body"><p class="case-prompt"><b>目标不变：</b>图像仅注入“未”字局部粘连，以及 NO PARKING 缺少字母 I。</p><table class="case-table"><thead><tr><th>维度</th><th>局部证据与结果</th><th>分数</th></tr></thead><tbody><tr><td>D1 字形</td><td>t1 的“未”出现局部笔画粘连；其他区域清晰度基本不变。</td><td>74</td></tr><tr><td>D2 内容</td><td>t3 OCR = “NO PARKNG”；局部 D=1，CER=1/9；实例 exact match 由 3/3 降为 2/3。</td><td>89</td></tr><tr><td>D3 Layout</td><td>三个实例位置、层级、颜色均未改变，因此不应随内容错误同步大幅下降。</td><td>93</td></tr><tr><td>D4 场景</td><td>文字仍附着在原路牌/海报上，透视与光照未改变。</td><td>91</td></tr></tbody></table><div class="case-total"><span>coverage gate ≈ 0.976</span><b>84.0 / 100</b></div><p class="case-observation">原始加权分约 86.2；字符召回下降后经 coverage gate 得到约 84.0。D1/D2 定向下降，而 D3/D4 基本稳定，符合四维解耦目标。</p></div>
+          </div>
+        </article>
+        <p class="test-note">下一步真实验证应将这类单因素编辑扩展为 blur、stroke break、substitution、deletion、position shift、wrong carrier、perspective mismatch 等受控对照集，并与人工四维标注计算 Spearman 相关性和 pairwise accuracy。</p>
+      </section>
+    </main>
+    <footer>复杂文字场景评测 · T2I Text Rendering Evaluation / Reward Design</footer>
+  </div>
+</body>
+</html>
