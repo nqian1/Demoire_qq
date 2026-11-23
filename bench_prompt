@@ -1,0 +1,2367 @@
+{
+  "description": "Exact English prompts and required text blocks for the accompanying English reference images. Text blocks retain their released schema and original lettering.",
+  "source": {
+    "file": "/home/wx1522744/zhaoqianqian/project/TextCanvasBench_up_final/00_input/prompt/prompt.jsonl",
+    "sha256": "7f3b451d71a3f3b2e6d7cc42e838cb3f4c8c381b040202f8a2b45815222c5141"
+  },
+  "samples": [
+    {
+      "id": "textcanvasbench_000007",
+      "used_for": [
+        "D3"
+      ],
+      "reference_image": "reference_images/textcanvasbench_000007.jpg",
+      "prompt_en": "This image is an infographic about network architectures, set against a light beige background. At the top, the title \"NETWORK ARCHITECTURES\" is displayed in a large, black serif font, followed by an introductory paragraph. The main content is divided into multiple regions. The top-left section, \"I. The Stack Comparison,\" visually contrasts the OSI and TCP/IP models using side-by-side diagrams with blue boxes (OSI) and green boxes (TCP/IP), with dotted lines connecting corresponding layers. On the right are the \"III. Field Notes\" and \"IV. Constants\" sections; the former is a list explaining the functions of key layers like the Physical and Network layers, while the latter specifies port ranges. Adjacent to this is a tilted red stamp reading \"APPROVED STANDARD 1984.\" The bottom-left section, \"II. Protocol Data Taxonomy,\" is a table detailing the \"Data Unit (PDU),\" \"Core Protocols,\" and \"Addressing\" methods for each network layer. In the bottom-right, a concentric circle diagram illustrates the concept of \"ENCAPSULATION.\" The reading order is non-linear, guided by Roman numerals that require jumping between sections. A mix of serif fonts for titles and sans-serif for body text creates a stylistic contrast.\n\nThe table columns are Layer, Data Unit (PDU), Core Protocols, and Addressing, with each data row aligned accordingly.",
+      "generation_format_instructions_en": "The required text below is grouped by independent visual region. Region IDs, bracketed type labels, and the table separator \"|\" are input structure markers, not visible lettering. Within each table, cells on a line occupy successive columns from left to right; each new line is the next row. Preserve repeated text at its respective locations. Follow the visual layout described above.\nUse the attached text_blocks items.content as the authoritative visible lettering. The language of the description does not change the language of the lettering. Preserve the original language, spelling, numbers, punctuation, and genuine bilingual content verbatim. Do not translate, transliterate, add parenthetical meanings, or correct the wording. If the prose conflicts with the inventory, use the inventory. Region IDs, text IDs, JSON syntax, and escape notation only organize the input and must not be rendered. Decode newlines inside strings and lay out each entry in its specified region and order.",
+      "text_blocks": [
+        {
+          "id": "text_1",
+          "label": "主标题",
+          "type": "header",
+          "source_text_ids": [
+            "text_1"
+          ],
+          "source_region_ids": [
+            "region_1"
+          ],
+          "items": [
+            {
+              "source_text_id": "text_1",
+              "content": "NETWORK ARCHITECTURES",
+              "role": "标题",
+              "reference_position_legacy": "顶部中央",
+              "reference_typography_legacy": "黑色，大字号，粗体，居中"
+            }
+          ],
+          "formatted_content": "NETWORK ARCHITECTURES",
+          "mapping_status": "two_pass_model_visual_audit_not_human",
+          "geometry_status": "regrouped_reference_boxes_not_rebuilt"
+        },
+        {
+          "id": "text_2",
+          "label": "引言段落",
+          "type": "paragraph",
+          "source_text_ids": [
+            "text_2"
+          ],
+          "source_region_ids": [
+            "region_2"
+          ],
+          "items": [
+            {
+              "source_text_id": "text_2",
+              "content": "A comparative study of the Open Systems Interconnection (OSI) and the Transmission Control Protocol / Internet Protocol (TCP/IP) frameworks. These models define the standards for communication across heterogeneous hardware systems, ensuring the reliable transfer of data packets from origin to destination across the global digital landscape.",
+              "role": "正文",
+              "reference_position_legacy": "标题下方中央",
+              "reference_typography_legacy": "黑色，中等字号，常规，两端对齐"
+            }
+          ],
+          "formatted_content": "A comparative study of the Open Systems Interconnection (OSI) and the Transmission Control Protocol / Internet Protocol (TCP/IP) frameworks. These models define the standards for communication across heterogeneous hardware systems, ensuring the reliable transfer of data packets from origin to destination across the global digital landscape.",
+          "mapping_status": "two_pass_model_visual_audit_not_human",
+          "geometry_status": "regrouped_reference_boxes_not_rebuilt"
+        },
+        {
+          "id": "text_3",
+          "label": "I. 堆栈对比区域",
+          "type": "section",
+          "source_text_ids": [
+            "text_3",
+            "text_5",
+            "text_6",
+            "text_7",
+            "text_8",
+            "text_9",
+            "text_10",
+            "text_11",
+            "text_12",
+            "text_13",
+            "text_14",
+            "text_15",
+            "text_20",
+            "text_21"
+          ],
+          "source_region_ids": [
+            "region_3",
+            "region_4"
+          ],
+          "items": [
+            {
+              "source_text_id": "text_3",
+              "content": "I. The Stack Comparison",
+              "role": "标题",
+              "reference_position_legacy": "左侧中部",
+              "reference_typography_legacy": "白色，中等字号，粗体，左对齐"
+            },
+            {
+              "source_text_id": "text_5",
+              "content": "7. Application Layer",
+              "role": "标签",
+              "reference_position_legacy": "左侧堆栈图顶部",
+              "reference_typography_legacy": "白色，小字号，常规，左对齐"
+            },
+            {
+              "source_text_id": "text_6",
+              "content": "Application Layer (TCP)",
+              "role": "标签",
+              "reference_position_legacy": "右侧堆栈图顶部",
+              "reference_typography_legacy": "白色，小字号，常规，左对齐"
+            },
+            {
+              "source_text_id": "text_7",
+              "content": "6. Presentation Layer",
+              "role": "标签",
+              "reference_position_legacy": "左侧堆栈图上部",
+              "reference_typography_legacy": "白色，小字号，常规，左对齐"
+            },
+            {
+              "source_text_id": "text_8",
+              "content": "5. Session Layer",
+              "role": "标签",
+              "reference_position_legacy": "左侧堆栈图上部",
+              "reference_typography_legacy": "白色，小字号，常规，左对齐"
+            },
+            {
+              "source_text_id": "text_9",
+              "content": "4. Transport Layer",
+              "role": "标签",
+              "reference_position_legacy": "左侧堆栈图中部",
+              "reference_typography_legacy": "白色，小字号，常规，左对齐"
+            },
+            {
+              "source_text_id": "text_10",
+              "content": "Transport Layer",
+              "role": "标签",
+              "reference_position_legacy": "右侧堆栈图中部",
+              "reference_typography_legacy": "白色，小字号，常规，左对齐"
+            },
+            {
+              "source_text_id": "text_11",
+              "content": "3. Network Layer",
+              "role": "标签",
+              "reference_position_legacy": "左侧堆栈图中部",
+              "reference_typography_legacy": "白色，小字号，常规，左对齐"
+            },
+            {
+              "source_text_id": "text_12",
+              "content": "Internet Layer",
+              "role": "标签",
+              "reference_position_legacy": "右侧堆栈图中部",
+              "reference_typography_legacy": "白色，小字号，常规，左对齐"
+            },
+            {
+              "source_text_id": "text_13",
+              "content": "2. Data Link Layer",
+              "role": "标签",
+              "reference_position_legacy": "左侧堆栈图下部",
+              "reference_typography_legacy": "白色，小字号，常规，左对齐"
+            },
+            {
+              "source_text_id": "text_14",
+              "content": "Network Interface",
+              "role": "标签",
+              "reference_position_legacy": "右侧堆栈图下部",
+              "reference_typography_legacy": "白色，小字号，常规，左对齐"
+            },
+            {
+              "source_text_id": "text_15",
+              "content": "1. Physical Layer",
+              "role": "标签",
+              "reference_position_legacy": "左侧堆栈图底部",
+              "reference_typography_legacy": "白色，小字号"
+            },
+            {
+              "source_text_id": "text_20",
+              "content": "Left: OSI 7-Layer Abstract Model",
+              "role": "标签",
+              "reference_position_legacy": "左侧堆栈图下方",
+              "reference_typography_legacy": "黑色，小字号，常规，左对齐"
+            },
+            {
+              "source_text_id": "text_21",
+              "content": "Right: TCP/IP Practical Protocol Suite",
+              "role": "标签",
+              "reference_position_legacy": "右侧堆栈图下方",
+              "reference_typography_legacy": "黑色，小字号"
+            }
+          ],
+          "formatted_content": "I. The Stack Comparison\n\n7. Application Layer\n6. Presentation Layer\n5. Session Layer\n4. Transport Layer\n3. Network Layer\n2. Data Link Layer\n1. Physical Layer\n\nApplication Layer (TCP)\nTransport Layer\nInternet Layer\nNetwork Interface\n\nLeft: OSI 7-Layer Abstract Model\n\nRight: TCP/IP Practical Protocol Suite",
+          "mapping_status": "two_pass_model_visual_audit_not_human",
+          "geometry_status": "regrouped_reference_boxes_not_rebuilt",
+          "sequences": [
+            [
+              5,
+              7,
+              8,
+              9,
+              11,
+              13,
+              15
+            ],
+            [
+              6,
+              10,
+              12,
+              14
+            ]
+          ]
+        },
+        {
+          "id": "text_4",
+          "label": "II. 协议数据分类区域",
+          "type": "table",
+          "source_text_ids": [
+            "text_28",
+            "text_29",
+            "text_30",
+            "text_31",
+            "text_32",
+            "text_33",
+            "text_34",
+            "text_35",
+            "text_36",
+            "text_37",
+            "text_38",
+            "text_39",
+            "text_40",
+            "text_41",
+            "text_42",
+            "text_43",
+            "text_44",
+            "text_45",
+            "text_46",
+            "text_47",
+            "text_48",
+            "text_49",
+            "text_50",
+            "text_51",
+            "text_52"
+          ],
+          "source_region_ids": [
+            "region_10",
+            "region_9"
+          ],
+          "items": [
+            {
+              "source_text_id": "text_28",
+              "content": "II. Protocol Data Taxonomy",
+              "role": "标题",
+              "reference_position_legacy": "左侧底部",
+              "reference_typography_legacy": "白色，中等字号，粗体，左对齐"
+            },
+            {
+              "source_text_id": "text_29",
+              "content": "Layer",
+              "role": "表格标题",
+              "reference_position_legacy": "表格标题行，第一列",
+              "reference_typography_legacy": "白色，小字号，常规，居中"
+            },
+            {
+              "source_text_id": "text_30",
+              "content": "Data Unit (PDU)",
+              "role": "表格标题",
+              "reference_position_legacy": "表格标题行，第二列",
+              "reference_typography_legacy": "白色，小字号"
+            },
+            {
+              "source_text_id": "text_31",
+              "content": "Core Protocols",
+              "role": "表格标题",
+              "reference_position_legacy": "表格标题行，第三列",
+              "reference_typography_legacy": "白色，小字号"
+            },
+            {
+              "source_text_id": "text_32",
+              "content": "Addressing",
+              "role": "表格标题",
+              "reference_position_legacy": "表格标题行，第四列",
+              "reference_typography_legacy": "白色，小字号"
+            },
+            {
+              "source_text_id": "text_33",
+              "content": "Application",
+              "role": "表格单元格",
+              "reference_position_legacy": "表格第一行，第一列",
+              "reference_typography_legacy": "黑色，小字号"
+            },
+            {
+              "source_text_id": "text_34",
+              "content": "Data / Message",
+              "role": "表格单元格",
+              "reference_position_legacy": "表格第一行，第二列",
+              "reference_typography_legacy": "黑色，小字号"
+            },
+            {
+              "source_text_id": "text_35",
+              "content": "HTTP, DNS, FTP, SMTP",
+              "role": "表格单元格",
+              "reference_position_legacy": "表格第一行，第三列",
+              "reference_typography_legacy": "黑色，小字号"
+            },
+            {
+              "source_text_id": "text_36",
+              "content": "Domain Name",
+              "role": "表格单元格",
+              "reference_position_legacy": "表格第一行，第四列",
+              "reference_typography_legacy": "黑色，小字号"
+            },
+            {
+              "source_text_id": "text_37",
+              "content": "Transport",
+              "role": "表格单元格",
+              "reference_position_legacy": "表格第二行，第一列",
+              "reference_typography_legacy": "黑色，小字号"
+            },
+            {
+              "source_text_id": "text_38",
+              "content": "Segment (TCP) / Datagram",
+              "role": "表格单元格",
+              "reference_position_legacy": "表格第二行，第二列",
+              "reference_typography_legacy": "黑色，小字号"
+            },
+            {
+              "source_text_id": "text_39",
+              "content": "TCP, UDP",
+              "role": "表格单元格",
+              "reference_position_legacy": "表格第二行，第三列",
+              "reference_typography_legacy": "黑色，小字号"
+            },
+            {
+              "source_text_id": "text_40",
+              "content": "Port Number",
+              "role": "表格单元格",
+              "reference_position_legacy": "表格第二行，第四列",
+              "reference_typography_legacy": "黑色，小字号"
+            },
+            {
+              "source_text_id": "text_41",
+              "content": "Network",
+              "role": "表格单元格",
+              "reference_position_legacy": "表格第三行，第一列",
+              "reference_typography_legacy": "黑色，小字号"
+            },
+            {
+              "source_text_id": "text_42",
+              "content": "Packet",
+              "role": "表格单元格",
+              "reference_position_legacy": "表格第三行，第二列",
+              "reference_typography_legacy": "黑色，小字号"
+            },
+            {
+              "source_text_id": "text_43",
+              "content": "IP (IPv4/v6), ICMP",
+              "role": "表格单元格",
+              "reference_position_legacy": "表格第三行，第三列",
+              "reference_typography_legacy": "黑色，小字号"
+            },
+            {
+              "source_text_id": "text_44",
+              "content": "IP Address",
+              "role": "表格单元格",
+              "reference_position_legacy": "表格第三行，第四列",
+              "reference_typography_legacy": "黑色，小字号"
+            },
+            {
+              "source_text_id": "text_45",
+              "content": "Data Link",
+              "role": "表格单元格",
+              "reference_position_legacy": "表格第四行，第一列",
+              "reference_typography_legacy": "黑色，小字号"
+            },
+            {
+              "source_text_id": "text_46",
+              "content": "Frame",
+              "role": "表格单元格",
+              "reference_position_legacy": "表格第四行，第二列",
+              "reference_typography_legacy": "黑色，小字号"
+            },
+            {
+              "source_text_id": "text_47",
+              "content": "Ethernet, Wi-Fi, ARP",
+              "role": "表格单元格",
+              "reference_position_legacy": "表格第四行，第三列",
+              "reference_typography_legacy": "黑色，小字号"
+            },
+            {
+              "source_text_id": "text_48",
+              "content": "MAC Address",
+              "role": "表格单元格",
+              "reference_position_legacy": "表格第四行，第四列",
+              "reference_typography_legacy": "黑色，小字号"
+            },
+            {
+              "source_text_id": "text_49",
+              "content": "Physical",
+              "role": "表格单元格",
+              "reference_position_legacy": "表格第五行，第一列",
+              "reference_typography_legacy": "黑色，小字号"
+            },
+            {
+              "source_text_id": "text_50",
+              "content": "Bit stream",
+              "role": "表格单元格",
+              "reference_position_legacy": "表格第五行，第二列",
+              "reference_typography_legacy": "黑色，小字号"
+            },
+            {
+              "source_text_id": "text_51",
+              "content": "DSL, IEEE 802.3, Hub",
+              "role": "表格单元格",
+              "reference_position_legacy": "表格第五行，第三列",
+              "reference_typography_legacy": "黑色，小字号"
+            },
+            {
+              "source_text_id": "text_52",
+              "content": "Physical Voltage",
+              "role": "表格单元格",
+              "reference_position_legacy": "表格第五行，第四列",
+              "reference_typography_legacy": "黑色，小字号"
+            }
+          ],
+          "formatted_content": "II. Protocol Data Taxonomy\nLayer | Data Unit (PDU) | Core Protocols | Addressing\nApplication | Data / Message | HTTP, DNS, FTP, SMTP | Domain Name\nTransport | Segment (TCP) / Datagram | TCP, UDP | Port Number\nNetwork | Packet | IP (IPv4/v6), ICMP | IP Address\nData Link | Frame | Ethernet, Wi-Fi, ARP | MAC Address\nPhysical | Bit stream | DSL, IEEE 802.3, Hub | Physical Voltage",
+          "mapping_status": "two_pass_model_visual_audit_not_human",
+          "geometry_status": "regrouped_reference_boxes_not_rebuilt",
+          "table": {
+            "headers": [
+              [
+                29
+              ],
+              [
+                30
+              ],
+              [
+                31
+              ],
+              [
+                32
+              ]
+            ],
+            "rows": [
+              [
+                [
+                  33
+                ],
+                [
+                  34
+                ],
+                [
+                  35
+                ],
+                [
+                  36
+                ]
+              ],
+              [
+                [
+                  37
+                ],
+                [
+                  38
+                ],
+                [
+                  39
+                ],
+                [
+                  40
+                ]
+              ],
+              [
+                [
+                  41
+                ],
+                [
+                  42
+                ],
+                [
+                  43
+                ],
+                [
+                  44
+                ]
+              ],
+              [
+                [
+                  45
+                ],
+                [
+                  46
+                ],
+                [
+                  47
+                ],
+                [
+                  48
+                ]
+              ],
+              [
+                [
+                  49
+                ],
+                [
+                  50
+                ],
+                [
+                  51
+                ],
+                [
+                  52
+                ]
+              ]
+            ],
+            "columns": 4,
+            "source": "visual_audit",
+            "cell_ids": "legacy_numeric_text_ids"
+          }
+        },
+        {
+          "id": "text_5",
+          "label": "III. 现场笔记区域",
+          "type": "section",
+          "source_text_ids": [
+            "text_4",
+            "text_16",
+            "text_17",
+            "text_18",
+            "text_19"
+          ],
+          "source_region_ids": [
+            "region_5",
+            "region_6"
+          ],
+          "items": [
+            {
+              "source_text_id": "text_4",
+              "content": "III. Field Notes",
+              "role": "标题",
+              "reference_position_legacy": "右侧中部",
+              "reference_typography_legacy": "白色，中等字号，粗体，左对齐"
+            },
+            {
+              "source_text_id": "text_16",
+              "content": "01 Physical Layer (L1): The foundation of all transit. It encompasses the raw transmission of bits over physical media including copper wires, fiber optics, or radio waves.",
+              "role": "正文",
+              "reference_position_legacy": "右侧“Field Notes”下方",
+              "reference_typography_legacy": "黑色，小字号，常规，两端对齐"
+            },
+            {
+              "source_text_id": "text_17",
+              "content": "02 Network Layer (L3): Responsible for packet forwarding and routing. It utilizes logical IP addresses to find paths across multiple network nodes.",
+              "role": "正文",
+              "reference_position_legacy": "右侧“Field Notes”下方",
+              "reference_typography_legacy": "黑色，小字号"
+            },
+            {
+              "source_text_id": "text_18",
+              "content": "03 Transport Layer (L4): Manages end-to-end communication. TCP provides reliable delivery via handshakes, whereas UDP prioritizes speed over integrity.",
+              "role": "正文",
+              "reference_position_legacy": "右侧“Field Notes”下方",
+              "reference_typography_legacy": "黑色，小字号"
+            },
+            {
+              "source_text_id": "text_19",
+              "content": "04 Application (L7): The interface for users. HTTP for web browsing, SMTP for mail, and SSH for secure remote management operate here.",
+              "role": "正文",
+              "reference_position_legacy": "右侧“Field Notes”下方",
+              "reference_typography_legacy": "黑色，小字号"
+            }
+          ],
+          "formatted_content": "III. Field Notes\n01 Physical Layer (L1): The foundation of all transit. It encompasses the raw transmission of bits over physical media including copper wires, fiber optics, or radio waves.\n02 Network Layer (L3): Responsible for packet forwarding and routing. It utilizes logical IP addresses to find paths across multiple network nodes.\n03 Transport Layer (L4): Manages end-to-end communication. TCP provides reliable delivery via handshakes, whereas UDP prioritizes speed over integrity.\n04 Application (L7): The interface for users. HTTP for web browsing, SMTP for mail, and SSH for secure remote management operate here.",
+          "mapping_status": "two_pass_model_visual_audit_not_human",
+          "geometry_status": "regrouped_reference_boxes_not_rebuilt"
+        },
+        {
+          "id": "text_6",
+          "label": "IV. 常量区域",
+          "type": "section",
+          "source_text_ids": [
+            "text_22",
+            "text_23",
+            "text_24",
+            "text_25",
+            "text_26",
+            "text_27"
+          ],
+          "source_region_ids": [
+            "region_7",
+            "region_8"
+          ],
+          "items": [
+            {
+              "source_text_id": "text_22",
+              "content": "IV. Constants",
+              "role": "标题",
+              "reference_position_legacy": "右侧中部",
+              "reference_typography_legacy": "白色，中等字号，粗体，左对齐"
+            },
+            {
+              "source_text_id": "text_23",
+              "content": "Port Range Specification",
+              "role": "标签",
+              "reference_position_legacy": "右侧“Constants”下方",
+              "reference_typography_legacy": "黑色，小字号，粗体，左对齐"
+            },
+            {
+              "source_text_id": "text_24",
+              "content": "Total Ports: 65,535",
+              "role": "标签",
+              "reference_position_legacy": "右侧“Port Range Specification”下方",
+              "reference_typography_legacy": "黑色，小字号"
+            },
+            {
+              "source_text_id": "text_25",
+              "content": "Well-Known: 0 - 1,023",
+              "role": "标签",
+              "reference_position_legacy": "右侧“Total Ports”下方",
+              "reference_typography_legacy": "黑色，小字号"
+            },
+            {
+              "source_text_id": "text_26",
+              "content": "Registered: 1,024 - 49,151",
+              "role": "标签",
+              "reference_position_legacy": "右侧“Well-Known”下方",
+              "reference_typography_legacy": "黑色，小字号"
+            },
+            {
+              "source_text_id": "text_27",
+              "content": "Dynamic: 49,152 - 65,535",
+              "role": "标签",
+              "reference_position_legacy": "右侧“Registered”下方",
+              "reference_typography_legacy": "黑色，小字号"
+            }
+          ],
+          "formatted_content": "IV. Constants\nPort Range Specification\nTotal Ports: 65,535\nWell-Known: 0 - 1,023\nRegistered: 1,024 - 49,151\nDynamic: 49,152 - 65,535",
+          "mapping_status": "two_pass_model_visual_audit_not_human",
+          "geometry_status": "regrouped_reference_boxes_not_rebuilt"
+        },
+        {
+          "id": "text_7",
+          "label": "红色印章",
+          "type": "note",
+          "source_text_ids": [
+            "text_53"
+          ],
+          "source_region_ids": [
+            "region_11"
+          ],
+          "items": [
+            {
+              "source_text_id": "text_53",
+              "content": "APPROVED STANDARD 1984",
+              "role": "标签",
+              "reference_position_legacy": "右侧中部，红色印章",
+              "reference_typography_legacy": "白色，中等字号，粗体，倾斜，居中"
+            }
+          ],
+          "formatted_content": "APPROVED STANDARD 1984",
+          "mapping_status": "two_pass_model_visual_audit_not_human",
+          "geometry_status": "regrouped_reference_boxes_not_rebuilt"
+        },
+        {
+          "id": "text_8",
+          "label": "封装示意图",
+          "type": "diagram",
+          "source_text_ids": [
+            "text_54"
+          ],
+          "source_region_ids": [
+            "region_12"
+          ],
+          "items": [
+            {
+              "source_text_id": "text_54",
+              "content": "ENCAPSULATION",
+              "role": "标签",
+              "reference_position_legacy": "右侧底部，圆形图中央",
+              "reference_typography_legacy": "黑色，中等字号，常规，居中"
+            }
+          ],
+          "formatted_content": "ENCAPSULATION",
+          "mapping_status": "two_pass_model_visual_audit_not_human",
+          "geometry_status": "regrouped_reference_boxes_not_rebuilt"
+        },
+        {
+          "id": "text_9",
+          "label": "页脚",
+          "type": "footer",
+          "source_text_ids": [
+            "text_55",
+            "text_56"
+          ],
+          "source_region_ids": [
+            "region_13",
+            "region_14"
+          ],
+          "items": [
+            {
+              "source_text_id": "text_55",
+              "content": "Ref: ISO/IEC 7498-1:1994",
+              "role": "页脚",
+              "reference_position_legacy": "左下角",
+              "reference_typography_legacy": "黑色，小字号，常规，左对齐"
+            },
+            {
+              "source_text_id": "text_56",
+              "content": "Plate No. 042 / Network Encyclopedia",
+              "role": "页脚",
+              "reference_position_legacy": "右下角",
+              "reference_typography_legacy": "黑色，小字号"
+            }
+          ],
+          "formatted_content": "Ref: ISO/IEC 7498-1:1994\nPlate No. 042 / Network Encyclopedia",
+          "mapping_status": "two_pass_model_visual_audit_not_human",
+          "geometry_status": "regrouped_reference_boxes_not_rebuilt"
+        }
+      ]
+    },
+    {
+      "id": "textcanvasbench_000043",
+      "used_for": [
+        "D4"
+      ],
+      "reference_image": "reference_images/textcanvasbench_000043.jpg",
+      "prompt_en": "This image is a technical specification datasheet. The top displays the company name \"AERO-LOGIC SYSTEMS,\" department, and document number. The main title \"THREE-AXIS FLIGHT CONTROL ACTUATOR LOGIC & OPERATIONAL DYNAMICS\" is centered in the largest, bold font. The page is divided into various functional sections by headers with blue background banners. The first section, \"CONNECTION DIAGRAM & INPUT/OUTPUT MAPPING,\" shows a pin connection diagram on the left and descriptive text along with a text box containing \"CONTROL MOMENT TRANSFER EQUATIONS\" on the right. The second section, \"AERODYNAMIC CONTROL SURFACE SCHEMATIC,\" contains a top-down schematic of an aircraft, using leader lines to label parts like \"LEFT AILERON\" and \"LEFT SPOILER,\" and indicating pitch, roll, and yaw axes. The lower half is split into two columns: the left column features a \"FUNCTIONAL TRUTH TABLE\" for different flight states, with a note below; the right column contains a \"DYNAMIC & ELECTRICAL LIMITS\" table showing parameter metrics, followed by an \"ABSOLUTE MAXIMUM RATINGS\" section with a red background banner, listing maximum limits and a warning message in red text. A line of fine print at the bottom center provides company contact information.",
+      "generation_format_instructions_en": "The required text below is grouped by independent visual region. Region IDs, bracketed type labels, and the table separator \"|\" are input structure markers, not visible lettering. Within each table, cells on a line occupy successive columns from left to right; each new line is the next row. Preserve repeated text at its respective locations. Follow the visual layout described above.\nUse the attached text_blocks items.content as the authoritative visible lettering. The language of the description does not change the language of the lettering. Preserve the original language, spelling, numbers, punctuation, and genuine bilingual content verbatim. Do not translate, transliterate, add parenthetical meanings, or correct the wording. If the prose conflicts with the inventory, use the inventory. Region IDs, text IDs, JSON syntax, and escape notation only organize the input and must not be rendered. Decode newlines inside strings and lay out each entry in its specified region and order.",
+      "text_blocks": [
+        {
+          "id": "text_1",
+          "label": "页眉左侧",
+          "type": "header",
+          "source_text_ids": [
+            "text_1",
+            "text_3"
+          ],
+          "source_region_ids": [
+            "region_14"
+          ],
+          "items": [
+            {
+              "source_text_id": "text_1",
+              "content": "AERO-LOGIC SYSTEMS",
+              "role": "公司名称",
+              "reference_position_legacy": "顶部左侧",
+              "reference_typography_legacy": "深蓝色，大写，粗体"
+            },
+            {
+              "source_text_id": "text_3",
+              "content": "FLIGHT DYNAMICS DIVISION",
+              "role": "部门名称",
+              "reference_position_legacy": "顶部左侧，公司名称下方",
+              "reference_typography_legacy": "黑色，小字号，常规字重"
+            }
+          ],
+          "formatted_content": "AERO-LOGIC SYSTEMS\nFLIGHT DYNAMICS DIVISION",
+          "mapping_status": "two_pass_model_visual_audit_not_human",
+          "geometry_status": "regrouped_reference_boxes_not_rebuilt"
+        },
+        {
+          "id": "text_2",
+          "label": "页眉右侧",
+          "type": "header",
+          "source_text_ids": [
+            "text_2",
+            "text_4"
+          ],
+          "source_region_ids": [
+            "region_15"
+          ],
+          "items": [
+            {
+              "source_text_id": "text_2",
+              "content": "AC-90-FCS / REV-D2",
+              "role": "文档编号",
+              "reference_position_legacy": "顶部右侧",
+              "reference_typography_legacy": "黑色，常规字重"
+            },
+            {
+              "source_text_id": "text_4",
+              "content": "October 1996",
+              "role": "日期",
+              "reference_position_legacy": "顶部右侧，文档编号下方",
+              "reference_typography_legacy": "黑色，小字号，常规字重"
+            }
+          ],
+          "formatted_content": "AC-90-FCS / REV-D2\nOctober 1996",
+          "mapping_status": "two_pass_model_visual_audit_not_human",
+          "geometry_status": "regrouped_reference_boxes_not_rebuilt"
+        },
+        {
+          "id": "text_3",
+          "label": "主标题",
+          "type": "title",
+          "source_text_ids": [
+            "text_5"
+          ],
+          "source_region_ids": [
+            "region_1"
+          ],
+          "items": [
+            {
+              "source_text_id": "text_5",
+              "content": "THREE-AXIS FLIGHT CONTROL ACTUATOR LOGIC & OPERATIONAL DYNAMICS",
+              "role": "标题",
+              "reference_position_legacy": "页面中央偏上",
+              "reference_typography_legacy": "黑色，大字号，粗体，大写"
+            }
+          ],
+          "formatted_content": "THREE-AXIS FLIGHT CONTROL ACTUATOR LOGIC & OPERATIONAL DYNAMICS",
+          "mapping_status": "two_pass_model_visual_audit_not_human",
+          "geometry_status": "regrouped_reference_boxes_not_rebuilt"
+        },
+        {
+          "id": "text_4",
+          "label": "连接图区块标题",
+          "type": "section",
+          "source_text_ids": [
+            "text_6"
+          ],
+          "source_region_ids": [
+            "region_2"
+          ],
+          "items": [
+            {
+              "source_text_id": "text_6",
+              "content": "CONNECTION DIAGRAM & INPUT/OUTPUT MAPPING",
+              "role": "子标题",
+              "reference_position_legacy": "标题下方，蓝色背景框内",
+              "reference_typography_legacy": "白色，中等字号，粗体，大写"
+            }
+          ],
+          "formatted_content": "CONNECTION DIAGRAM & INPUT/OUTPUT MAPPING",
+          "mapping_status": "two_pass_model_visual_audit_not_human",
+          "geometry_status": "regrouped_reference_boxes_not_rebuilt"
+        },
+        {
+          "id": "text_5",
+          "label": "引脚连接图",
+          "type": "diagram",
+          "source_text_ids": [
+            "text_7",
+            "text_8",
+            "text_9",
+            "text_10",
+            "text_11",
+            "text_12",
+            "text_13",
+            "text_14",
+            "text_15",
+            "text_16",
+            "text_17",
+            "text_18",
+            "text_19",
+            "text_20",
+            "text_21",
+            "text_22",
+            "text_23"
+          ],
+          "source_region_ids": [
+            "region_4"
+          ],
+          "items": [
+            {
+              "source_text_id": "text_7",
+              "content": "AIL_L_ACT [1] •",
+              "role": "列表项",
+              "reference_position_legacy": "左侧列表，第一项",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_8",
+              "content": "AIL_R_ACT [2] •",
+              "role": "列表项",
+              "reference_position_legacy": "左侧列表，第二项",
+              "reference_typography_legacy": "黑色, 常规字号, 常规字重"
+            },
+            {
+              "source_text_id": "text_9",
+              "content": "ELEV_L_ACT [3] •",
+              "role": "列表项",
+              "reference_position_legacy": "左侧列表，第三项",
+              "reference_typography_legacy": "黑色, 常规字号, 常规字重"
+            },
+            {
+              "source_text_id": "text_10",
+              "content": "ELEV_R_ACT [4] •",
+              "role": "列表项",
+              "reference_position_legacy": "左侧列表，第四项",
+              "reference_typography_legacy": "黑色, 常规字号, 常规字重"
+            },
+            {
+              "source_text_id": "text_11",
+              "content": "RUD_ACT [5] •",
+              "role": "列表项",
+              "reference_position_legacy": "左侧列表，第五项",
+              "reference_typography_legacy": "黑色, 常规字号, 常规字重"
+            },
+            {
+              "source_text_id": "text_12",
+              "content": "FLAP_L_ACT [6] •",
+              "role": "列表项",
+              "reference_position_legacy": "左侧列表，第六项",
+              "reference_typography_legacy": "黑色, 常规字号, 常规字重"
+            },
+            {
+              "source_text_id": "text_13",
+              "content": "FLAP_R_ACT [7] •",
+              "role": "列表项",
+              "reference_position_legacy": "左侧列表，第七项",
+              "reference_typography_legacy": "黑色, 常规字号, 常规字重"
+            },
+            {
+              "source_text_id": "text_14",
+              "content": "GND [8] •",
+              "role": "列表项",
+              "reference_position_legacy": "左侧列表，第八项",
+              "reference_typography_legacy": "黑色, 常规字号, 常规字重"
+            },
+            {
+              "source_text_id": "text_15",
+              "content": "FCS-90-16",
+              "role": "标签",
+              "reference_position_legacy": "中间方框内",
+              "reference_typography_legacy": "黑色，常规字号，常规字重，垂直排列"
+            },
+            {
+              "source_text_id": "text_16",
+              "content": "• [16] VCC",
+              "role": "列表项",
+              "reference_position_legacy": "右侧列表，第一项",
+              "reference_typography_legacy": "黑色, 常规字号, 常规字重"
+            },
+            {
+              "source_text_id": "text_17",
+              "content": "• [15] ROLL_IN",
+              "role": "列表项",
+              "reference_position_legacy": "右侧列表，第二项",
+              "reference_typography_legacy": "黑色, 常规字号, 常规字重"
+            },
+            {
+              "source_text_id": "text_18",
+              "content": "• [14] PITCH_IN",
+              "role": "列表项",
+              "reference_position_legacy": "右侧列表，第三项",
+              "reference_typography_legacy": "黑色, 常规字号, 常规字重"
+            },
+            {
+              "source_text_id": "text_19",
+              "content": "• [13] YAW_IN",
+              "role": "列表项",
+              "reference_position_legacy": "右侧列表，第四项",
+              "reference_typography_legacy": "黑色, 常规字号, 常规字重"
+            },
+            {
+              "source_text_id": "text_20",
+              "content": "• [12] FLAP_CMD",
+              "role": "列表项",
+              "reference_position_legacy": "右侧列表，第五项",
+              "reference_typography_legacy": "黑色, 常规字号, 常规字重"
+            },
+            {
+              "source_text_id": "text_21",
+              "content": "• [11] SPL_L_IN",
+              "role": "列表项",
+              "reference_position_legacy": "右侧列表，第六项",
+              "reference_typography_legacy": "黑色, 常规字号, 常规字重"
+            },
+            {
+              "source_text_id": "text_22",
+              "content": "• [10] SPL_R_IN",
+              "role": "列表项",
+              "reference_position_legacy": "右侧列表，第七项",
+              "reference_typography_legacy": "黑色, 常规字号, 常规字重"
+            },
+            {
+              "source_text_id": "text_23",
+              "content": "• [9] FAULT_DET",
+              "role": "列表项",
+              "reference_position_legacy": "右侧列表，第八项",
+              "reference_typography_legacy": "黑色, 常规字号, 常规字重"
+            }
+          ],
+          "formatted_content": "AIL_L_ACT [1] •\nAIL_R_ACT [2] •\nELEV_L_ACT [3] •\nELEV_R_ACT [4] •\nRUD_ACT [5] •\nFLAP_L_ACT [6] •\nFLAP_R_ACT [7] •\nGND [8] •\nFCS-90-16\n• [16] VCC\n• [15] ROLL_IN\n• [14] PITCH_IN\n• [13] YAW_IN\n• [12] FLAP_CMD\n• [11] SPL_L_IN\n• [10] SPL_R_IN\n• [9] FAULT_DET",
+          "mapping_status": "two_pass_model_visual_audit_not_human",
+          "geometry_status": "regrouped_reference_boxes_not_rebuilt"
+        },
+        {
+          "id": "text_6",
+          "label": "控制面说明文本",
+          "type": "paragraph",
+          "source_text_ids": [
+            "text_24"
+          ],
+          "source_region_ids": [
+            "region_3"
+          ],
+          "items": [
+            {
+              "source_text_id": "text_24",
+              "content": "The FCS-90A controllers coordinate fixed-wing flight control surfaces across three orthogonal axes. Roll (longitudinal axis) is governed by differential deflection of wing-tip ailerons. Pitch (transverse axis) is modulated by elevators on the horizontal stabilizer to control the angle of attack. Yaw (vertical axis) is managed by the vertical rudder. Auxiliary surfaces include flaps for lift enhancement during low-speed phases, and spoilers for lift destruction during landing touchdown operations.",
+              "role": "正文",
+              "reference_position_legacy": "右侧正文",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            }
+          ],
+          "formatted_content": "The FCS-90A controllers coordinate fixed-wing flight control surfaces across three orthogonal axes. Roll (longitudinal axis) is governed by differential deflection of wing-tip ailerons. Pitch (transverse axis) is modulated by elevators on the horizontal stabilizer to control the angle of attack. Yaw (vertical axis) is managed by the vertical rudder. Auxiliary surfaces include flaps for lift enhancement during low-speed phases, and spoilers for lift destruction during landing touchdown operations.",
+          "mapping_status": "two_pass_model_visual_audit_not_human",
+          "geometry_status": "regrouped_reference_boxes_not_rebuilt"
+        },
+        {
+          "id": "text_7",
+          "label": "控制力矩方程框",
+          "type": "info_card",
+          "source_text_ids": [
+            "text_25",
+            "text_26",
+            "text_27",
+            "text_28"
+          ],
+          "source_region_ids": [
+            "region_6"
+          ],
+          "items": [
+            {
+              "source_text_id": "text_25",
+              "content": "CONTROL MOMENT TRANSFER EQUATIONS",
+              "role": "子标题",
+              "reference_position_legacy": "右侧正文下方，子标题",
+              "reference_typography_legacy": "黑色，常规字号，粗体，大写"
+            },
+            {
+              "source_text_id": "text_26",
+              "content": "L_roll = q * S * b * C1 (dAileron)",
+              "role": "公式",
+              "reference_position_legacy": "控制力矩方程，第一行",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_27",
+              "content": "M_pitch = q * S * c * Cm (dElevator)",
+              "role": "公式",
+              "reference_position_legacy": "控制力矩方程，第二行",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_28",
+              "content": "N_yaw = q * S * b * Cn (dRudder)",
+              "role": "公式",
+              "reference_position_legacy": "控制力矩方程，第三行",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            }
+          ],
+          "formatted_content": "CONTROL MOMENT TRANSFER EQUATIONS\nL_roll = q * S * b * C1 (dAileron)\nM_pitch = q * S * c * Cm (dElevator)\nN_yaw = q * S * b * Cn (dRudder)",
+          "mapping_status": "two_pass_model_visual_audit_not_human",
+          "geometry_status": "regrouped_reference_boxes_not_rebuilt"
+        },
+        {
+          "id": "text_8",
+          "label": "气动控制面示意图标题",
+          "type": "section",
+          "source_text_ids": [
+            "text_29"
+          ],
+          "source_region_ids": [
+            "region_7"
+          ],
+          "items": [
+            {
+              "source_text_id": "text_29",
+              "content": "AERODYNAMIC CONTROL SURFACE SCHEMATIC",
+              "role": "子标题",
+              "reference_position_legacy": "页面中部，蓝色背景框内",
+              "reference_typography_legacy": "白色，中等字号，粗体，大写"
+            }
+          ],
+          "formatted_content": "AERODYNAMIC CONTROL SURFACE SCHEMATIC",
+          "mapping_status": "two_pass_model_visual_audit_not_human",
+          "geometry_status": "regrouped_reference_boxes_not_rebuilt"
+        },
+        {
+          "id": "text_9",
+          "label": "气动控制面示意图",
+          "type": "diagram",
+          "source_text_ids": [
+            "text_30",
+            "text_31",
+            "text_32",
+            "text_33",
+            "text_34",
+            "text_35",
+            "text_36",
+            "text_37"
+          ],
+          "source_region_ids": [
+            "region_7"
+          ],
+          "items": [
+            {
+              "source_text_id": "text_30",
+              "content": "LEFT AILERON",
+              "role": "标签",
+              "reference_position_legacy": "示意图左上角",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_31",
+              "content": "LEFT SPOILER",
+              "role": "标签",
+              "reference_position_legacy": "示意图左侧中部",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_32",
+              "content": "LEFT FLAPS",
+              "role": "标签",
+              "reference_position_legacy": "示意图左侧下方",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_33",
+              "content": "YAW (CG)",
+              "role": "标签",
+              "reference_position_legacy": "示意图中央",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_34",
+              "content": "PITCH AXIS",
+              "role": "标签",
+              "reference_position_legacy": "示意图下方",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_35",
+              "content": "LEFT ELEVATOR",
+              "role": "标签",
+              "reference_position_legacy": "示意图右上角",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_36",
+              "content": "RUDDER PANEL",
+              "role": "标签",
+              "reference_position_legacy": "示意图右侧中部",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_37",
+              "content": "ROLL AXIS",
+              "role": "标签",
+              "reference_position_legacy": "示意图右侧下方",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            }
+          ],
+          "formatted_content": "LEFT AILERON\nLEFT SPOILER\nLEFT FLAPS\nYAW (CG)\nPITCH AXIS\nLEFT ELEVATOR\nRUDDER PANEL\nROLL AXIS",
+          "mapping_status": "two_pass_model_visual_audit_not_human",
+          "geometry_status": "regrouped_reference_boxes_not_rebuilt"
+        },
+        {
+          "id": "text_10",
+          "label": "功能真值表标题",
+          "type": "section",
+          "source_text_ids": [
+            "text_38"
+          ],
+          "source_region_ids": [
+            "region_8"
+          ],
+          "items": [
+            {
+              "source_text_id": "text_38",
+              "content": "FUNCTIONAL TRUTH TABLE",
+              "role": "表格标题",
+              "reference_position_legacy": "页面下部左侧，蓝色背景框内",
+              "reference_typography_legacy": "白色，中等字号，粗体，大写"
+            }
+          ],
+          "formatted_content": "FUNCTIONAL TRUTH TABLE",
+          "mapping_status": "two_pass_model_visual_audit_not_human",
+          "geometry_status": "regrouped_reference_boxes_not_rebuilt"
+        },
+        {
+          "id": "text_11",
+          "label": "功能真值表",
+          "type": "table",
+          "source_text_ids": [
+            "text_40",
+            "text_41",
+            "text_42",
+            "text_43",
+            "text_44",
+            "text_45",
+            "text_46",
+            "text_47",
+            "text_48",
+            "text_49",
+            "text_50",
+            "text_51",
+            "text_52",
+            "text_53",
+            "text_54",
+            "text_55",
+            "text_56",
+            "text_57",
+            "text_58",
+            "text_59",
+            "text_60",
+            "text_61",
+            "text_62",
+            "text_63",
+            "text_64",
+            "text_65",
+            "text_66",
+            "text_67",
+            "text_68",
+            "text_69",
+            "text_70",
+            "text_71",
+            "text_72",
+            "text_73",
+            "text_74",
+            "text_75",
+            "text_76",
+            "text_77",
+            "text_78",
+            "text_79",
+            "text_80",
+            "text_81",
+            "text_82",
+            "text_83",
+            "text_84",
+            "text_85",
+            "text_86",
+            "text_87"
+          ],
+          "source_region_ids": [
+            "region_8"
+          ],
+          "items": [
+            {
+              "source_text_id": "text_40",
+              "content": "FLIGHT STATE",
+              "role": "表头",
+              "reference_position_legacy": "功能真值表表头，第一列",
+              "reference_typography_legacy": "黑色，常规字号，粗体"
+            },
+            {
+              "source_text_id": "text_41",
+              "content": "ROLL",
+              "role": "表头",
+              "reference_position_legacy": "功能真值表表头，第二列",
+              "reference_typography_legacy": "黑色，常规字号，粗体"
+            },
+            {
+              "source_text_id": "text_42",
+              "content": "PITCH",
+              "role": "表头",
+              "reference_position_legacy": "功能真值表表头，第三列",
+              "reference_typography_legacy": "黑色，常规字号，粗体"
+            },
+            {
+              "source_text_id": "text_43",
+              "content": "YAW",
+              "role": "表头",
+              "reference_position_legacy": "功能真值表表头，第四列",
+              "reference_typography_legacy": "黑色，常规字号，粗体"
+            },
+            {
+              "source_text_id": "text_44",
+              "content": "AILERONS",
+              "role": "表头",
+              "reference_position_legacy": "功能真值表表头，第五列",
+              "reference_typography_legacy": "黑色，常规字号，粗体"
+            },
+            {
+              "source_text_id": "text_45",
+              "content": "ELEVATOR",
+              "role": "表头",
+              "reference_position_legacy": "功能真值表表头，第六列",
+              "reference_typography_legacy": "黑色，常规字号，粗体"
+            },
+            {
+              "source_text_id": "text_46",
+              "content": "CRUISE",
+              "role": "表格内容",
+              "reference_position_legacy": "功能真值表，第一行第一列",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_47",
+              "content": "NEUT",
+              "role": "表格内容",
+              "reference_position_legacy": "功能真值表，第一行第二列",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_48",
+              "content": "NEUT",
+              "role": "表格内容",
+              "reference_position_legacy": "功能真值表，第一行第三列",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_49",
+              "content": "NEUT",
+              "role": "表格内容",
+              "reference_position_legacy": "功能真值表，第一行第四列",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_50",
+              "content": "NEUTRAL",
+              "role": "表格内容",
+              "reference_position_legacy": "功能真值表，第一行第五列",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_51",
+              "content": "NEUTRAL",
+              "role": "表格内容",
+              "reference_position_legacy": "功能真值表，第一行第六列",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_52",
+              "content": "BANK LEFT",
+              "role": "表格内容",
+              "reference_position_legacy": "功能真值表，第二行第一列",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_53",
+              "content": "LEFT",
+              "role": "表格内容",
+              "reference_position_legacy": "功能真值表，第二行第二列",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_54",
+              "content": "NEUT",
+              "role": "表格内容",
+              "reference_position_legacy": "功能真值表，第二行第三列",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_55",
+              "content": "NEUT",
+              "role": "表格内容",
+              "reference_position_legacy": "功能真值表，第二行第四列",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_56",
+              "content": "L_UP / R_DN",
+              "role": "表格内容",
+              "reference_position_legacy": "功能真值表，第二行第五列",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_57",
+              "content": "NEUTRAL",
+              "role": "表格内容",
+              "reference_position_legacy": "功能真值表，第二行第六列",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_58",
+              "content": "BANK RIGHT",
+              "role": "表格内容",
+              "reference_position_legacy": "功能真值表，第三行第一列",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_59",
+              "content": "RIGHT",
+              "role": "表格内容",
+              "reference_position_legacy": "功能真值表，第三行第二列",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_60",
+              "content": "NEUT",
+              "role": "表格内容",
+              "reference_position_legacy": "功能真值表，第三行第三列",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_61",
+              "content": "NEUT",
+              "role": "表格内容",
+              "reference_position_legacy": "功能真值表，第三行第四列",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_62",
+              "content": "L_DN / R_UP",
+              "role": "表格内容",
+              "reference_position_legacy": "功能真值表，第三行第五列",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_63",
+              "content": "NEUTRAL",
+              "role": "表格内容",
+              "reference_position_legacy": "功能真值表，第三行第六列",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_64",
+              "content": "PITCH UP",
+              "role": "表格内容",
+              "reference_position_legacy": "功能真值表，第四行第一列",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_65",
+              "content": "NEUT",
+              "role": "表格内容",
+              "reference_position_legacy": "功能真值表，第四行第二列",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_66",
+              "content": "UP",
+              "role": "表格内容",
+              "reference_position_legacy": "功能真值表，第四行第三列",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_67",
+              "content": "NEUT",
+              "role": "表格内容",
+              "reference_position_legacy": "功能真值表，第四行第四列",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_68",
+              "content": "NEUTRAL",
+              "role": "表格内容",
+              "reference_position_legacy": "功能真值表，第四行第五列",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_69",
+              "content": "DEFLECT_UP",
+              "role": "表格内容",
+              "reference_position_legacy": "功能真值表，第四行第六列",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_70",
+              "content": "PITCH DOWN",
+              "role": "表格内容",
+              "reference_position_legacy": "功能真值表，第五行第一列",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_71",
+              "content": "NEUT",
+              "role": "表格内容",
+              "reference_position_legacy": "功能真值表，第五行第二列",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_72",
+              "content": "DOWN",
+              "role": "表格内容",
+              "reference_position_legacy": "功能真值表，第五行第三列",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_73",
+              "content": "NEUT",
+              "role": "表格内容",
+              "reference_position_legacy": "功能真值表，第五行第四列",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_74",
+              "content": "NEUTRAL",
+              "role": "表格内容",
+              "reference_position_legacy": "功能真值表，第五行第五列",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_75",
+              "content": "DEFLECT_DN",
+              "role": "表格内容",
+              "reference_position_legacy": "功能真值表，第五行第六列",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_76",
+              "content": "YAW LEFT",
+              "role": "表格内容",
+              "reference_position_legacy": "功能真值表，第六行第一列",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_77",
+              "content": "NEUT",
+              "role": "表格内容",
+              "reference_position_legacy": "功能真值表，第六行第二列",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_78",
+              "content": "NEUT",
+              "role": "表格内容",
+              "reference_position_legacy": "功能真值表，第六行第三列",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_79",
+              "content": "LEFT",
+              "role": "表格内容",
+              "reference_position_legacy": "功能真值表，第六行第四列",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_80",
+              "content": "NEUTRAL",
+              "role": "表格内容",
+              "reference_position_legacy": "功能真值表，第六行第五列",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_81",
+              "content": "NEUTRAL",
+              "role": "表格内容",
+              "reference_position_legacy": "功能真值表，第六行第六列",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_82",
+              "content": "YAW RIGHT",
+              "role": "表格内容",
+              "reference_position_legacy": "功能真值表，第七行第一列",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_83",
+              "content": "NEUT",
+              "role": "表格内容",
+              "reference_position_legacy": "功能真值表，第七行第二列",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_84",
+              "content": "NEUT",
+              "role": "表格内容",
+              "reference_position_legacy": "功能真值表，第七行第三列",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_85",
+              "content": "RIGHT",
+              "role": "表格内容",
+              "reference_position_legacy": "功能真值表，第七行第四列",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_86",
+              "content": "NEUTRAL",
+              "role": "表格内容",
+              "reference_position_legacy": "功能真值表，第七行第五列",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_87",
+              "content": "NEUTRAL",
+              "role": "表格内容",
+              "reference_position_legacy": "功能真值表，第七行第六列",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            }
+          ],
+          "formatted_content": "FLIGHT STATE | ROLL | PITCH | YAW | AILERONS | ELEVATOR\nCRUISE | NEUT | NEUT | NEUT | NEUTRAL | NEUTRAL\nBANK LEFT | LEFT | NEUT | NEUT | L_UP / R_DN | NEUTRAL\nBANK RIGHT | RIGHT | NEUT | NEUT | L_DN / R_UP | NEUTRAL\nPITCH UP | NEUT | UP | NEUT | NEUTRAL | DEFLECT_UP\nPITCH DOWN | NEUT | DOWN | NEUT | NEUTRAL | DEFLECT_DN\nYAW LEFT | NEUT | NEUT | LEFT | NEUTRAL | NEUTRAL\nYAW RIGHT | NEUT | NEUT | RIGHT | NEUTRAL | NEUTRAL",
+          "mapping_status": "two_pass_model_visual_audit_not_human",
+          "geometry_status": "regrouped_reference_boxes_not_rebuilt",
+          "table": {
+            "headers": [
+              [
+                40
+              ],
+              [
+                41
+              ],
+              [
+                42
+              ],
+              [
+                43
+              ],
+              [
+                44
+              ],
+              [
+                45
+              ]
+            ],
+            "rows": [
+              [
+                [
+                  46
+                ],
+                [
+                  47
+                ],
+                [
+                  48
+                ],
+                [
+                  49
+                ],
+                [
+                  50
+                ],
+                [
+                  51
+                ]
+              ],
+              [
+                [
+                  52
+                ],
+                [
+                  53
+                ],
+                [
+                  54
+                ],
+                [
+                  55
+                ],
+                [
+                  56
+                ],
+                [
+                  57
+                ]
+              ],
+              [
+                [
+                  58
+                ],
+                [
+                  59
+                ],
+                [
+                  60
+                ],
+                [
+                  61
+                ],
+                [
+                  62
+                ],
+                [
+                  63
+                ]
+              ],
+              [
+                [
+                  64
+                ],
+                [
+                  65
+                ],
+                [
+                  66
+                ],
+                [
+                  67
+                ],
+                [
+                  68
+                ],
+                [
+                  69
+                ]
+              ],
+              [
+                [
+                  70
+                ],
+                [
+                  71
+                ],
+                [
+                  72
+                ],
+                [
+                  73
+                ],
+                [
+                  74
+                ],
+                [
+                  75
+                ]
+              ],
+              [
+                [
+                  76
+                ],
+                [
+                  77
+                ],
+                [
+                  78
+                ],
+                [
+                  79
+                ],
+                [
+                  80
+                ],
+                [
+                  81
+                ]
+              ],
+              [
+                [
+                  82
+                ],
+                [
+                  83
+                ],
+                [
+                  84
+                ],
+                [
+                  85
+                ],
+                [
+                  86
+                ],
+                [
+                  87
+                ]
+              ]
+            ],
+            "columns": 6,
+            "source": "visual_audit",
+            "cell_ids": "legacy_numeric_text_ids"
+          }
+        },
+        {
+          "id": "text_12",
+          "label": "动态与电气限制表标题",
+          "type": "section",
+          "source_text_ids": [
+            "text_39"
+          ],
+          "source_region_ids": [
+            "region_9"
+          ],
+          "items": [
+            {
+              "source_text_id": "text_39",
+              "content": "DYNAMIC & ELECTRICAL LIMITS",
+              "role": "表格标题",
+              "reference_position_legacy": "页面下部右侧，蓝色背景框内",
+              "reference_typography_legacy": "白色，中等字号，粗体，大写"
+            }
+          ],
+          "formatted_content": "DYNAMIC & ELECTRICAL LIMITS",
+          "mapping_status": "two_pass_model_visual_audit_not_human",
+          "geometry_status": "regrouped_reference_boxes_not_rebuilt"
+        },
+        {
+          "id": "text_13",
+          "label": "动态与电气限制表",
+          "type": "table",
+          "source_text_ids": [
+            "text_88",
+            "text_89",
+            "text_90",
+            "text_91",
+            "text_92",
+            "text_93",
+            "text_94",
+            "text_95",
+            "text_96",
+            "text_97",
+            "text_98",
+            "text_99",
+            "text_100",
+            "text_101",
+            "text_102",
+            "text_103",
+            "text_104",
+            "text_105",
+            "text_106",
+            "text_107",
+            "text_108",
+            "text_109",
+            "text_110",
+            "text_111",
+            "text_112",
+            "text_113",
+            "text_114",
+            "text_115",
+            "text_116",
+            "text_117",
+            "text_118",
+            "text_119",
+            "text_120",
+            "text_121",
+            "text_122",
+            "text_123",
+            "text_124",
+            "text_125",
+            "text_126",
+            "text_127",
+            "text_128"
+          ],
+          "source_region_ids": [
+            "region_9"
+          ],
+          "items": [
+            {
+              "source_text_id": "text_88",
+              "content": "PARAMETER",
+              "role": "表头",
+              "reference_position_legacy": "动态与电气限制表表头，第一列",
+              "reference_typography_legacy": "黑色，常规字号，粗体"
+            },
+            {
+              "source_text_id": "text_89",
+              "content": "SYMBOL",
+              "role": "表头",
+              "reference_position_legacy": "动态与电气限制表表头，第二列",
+              "reference_typography_legacy": "黑色，常规字号，粗体"
+            },
+            {
+              "source_text_id": "text_90",
+              "content": "MIN",
+              "role": "表头",
+              "reference_position_legacy": "动态与电气限制表表头，第三列",
+              "reference_typography_legacy": "黑色，常规字号，粗体"
+            },
+            {
+              "source_text_id": "text_91",
+              "content": "TYP",
+              "role": "表头",
+              "reference_position_legacy": "动态与电气限制表表头，第四列",
+              "reference_typography_legacy": "黑色，常规字号，粗体"
+            },
+            {
+              "source_text_id": "text_92",
+              "content": "MAX",
+              "role": "表头",
+              "reference_position_legacy": "动态与电气限制表表头，第五列",
+              "reference_typography_legacy": "黑色，常规字号，粗体"
+            },
+            {
+              "source_text_id": "text_93",
+              "content": "UNIT",
+              "role": "表头",
+              "reference_position_legacy": "动态与电气限制表表头，第六列",
+              "reference_typography_legacy": "黑色，常规字号，粗体"
+            },
+            {
+              "source_text_id": "text_94",
+              "content": "Aileron deflection",
+              "role": "表格内容",
+              "reference_position_legacy": "动态与电气限制表，第一行第一列",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_95",
+              "content": "dA",
+              "role": "表格内容",
+              "reference_position_legacy": "动态与电气限制表，第一行第二列",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_96",
+              "content": "-25",
+              "role": "表格内容",
+              "reference_position_legacy": "动态与电气限制表，第一行第三列",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_97",
+              "content": "0",
+              "role": "表格内容",
+              "reference_position_legacy": "动态与电气限制表，第一行第四列",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_98",
+              "content": "+25",
+              "role": "表格内容",
+              "reference_position_legacy": "动态与电气限制表，第一行第五列",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_99",
+              "content": "deg",
+              "role": "表格内容",
+              "reference_position_legacy": "动态与电气限制表，第一行第六列",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_100",
+              "content": "Elevator deflection",
+              "role": "表格内容",
+              "reference_position_legacy": "动态与电气限制表，第二行第一列",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_101",
+              "content": "dE",
+              "role": "表格内容",
+              "reference_position_legacy": "动态与电气限制表，第二行第二列",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_102",
+              "content": "-30",
+              "role": "表格内容",
+              "reference_position_legacy": "动态与电气限制表，第二行第三列",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_103",
+              "content": "0",
+              "role": "表格内容",
+              "reference_position_legacy": "动态与电气限制表，第二行第四列",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_104",
+              "content": "+20",
+              "role": "表格内容",
+              "reference_position_legacy": "动态与电气限制表，第二行第五列",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_105",
+              "content": "deg",
+              "role": "表格内容",
+              "reference_position_legacy": "动态与电气限制表，第二行第六列",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_106",
+              "content": "Rudder deflection",
+              "role": "表格内容",
+              "reference_position_legacy": "动态与电气限制表，第三行第一列",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_107",
+              "content": "dR",
+              "role": "表格内容",
+              "reference_position_legacy": "动态与电气限制表，第三行第二列",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_108",
+              "content": "-35",
+              "role": "表格内容",
+              "reference_position_legacy": "动态与电气限制表，第三行第三列",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_109",
+              "content": "0",
+              "role": "表格内容",
+              "reference_position_legacy": "动态与电气限制表，第三行第四列",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_110",
+              "content": "+35",
+              "role": "表格内容",
+              "reference_position_legacy": "动态与电气限制表，第三行第五列",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_111",
+              "content": "deg",
+              "role": "表格内容",
+              "reference_position_legacy": "动态与电气限制表，第三行第六列",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_112",
+              "content": "FLAP Travel range",
+              "role": "表格内容",
+              "reference_position_legacy": "动态与电气限制表，第四行第一列",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_113",
+              "content": "dF",
+              "role": "表格内容",
+              "reference_position_legacy": "动态与电气限制表，第四行第二列",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_114",
+              "content": "0",
+              "role": "表格内容",
+              "reference_position_legacy": "动态与电气限制表，第四行第三列",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_115",
+              "content": "15",
+              "role": "表格内容",
+              "reference_position_legacy": "动态与电气限制表，第四行第四列",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_116",
+              "content": "40",
+              "role": "表格内容",
+              "reference_position_legacy": "动态与电气限制表，第四行第五列",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_117",
+              "content": "deg",
+              "role": "表格内容",
+              "reference_position_legacy": "动态与电气限制表，第四行第六列",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_118",
+              "content": "Supply Voltage Vcc",
+              "role": "表格内容",
+              "reference_position_legacy": "动态与电气限制表，第五行第一列",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_119",
+              "content": "Vcc",
+              "role": "表格内容",
+              "reference_position_legacy": "动态与电气限制表，第五行第二列",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_120",
+              "content": "4.75",
+              "role": "表格内容",
+              "reference_position_legacy": "动态与电气限制表，第五行第三列",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_121",
+              "content": "5.0",
+              "role": "表格内容",
+              "reference_position_legacy": "动态与电气限制表，第五行第四列",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_122",
+              "content": "5.25",
+              "role": "表格内容",
+              "reference_position_legacy": "动态与电气限制表，第五行第五列",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_123",
+              "content": "V",
+              "role": "表格内容",
+              "reference_position_legacy": "动态与电气限制表，第五行第六列",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_124",
+              "content": "Response Latency",
+              "role": "表格内容",
+              "reference_position_legacy": "动态与电气限制表，第六行第一列",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_125",
+              "content": "Td",
+              "role": "表格内容",
+              "reference_position_legacy": "动态与电气限制表，第六行第二列",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_126",
+              "content": "45",
+              "role": "表格内容",
+              "reference_position_legacy": "动态与电气限制表，第六行第四列",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_127",
+              "content": "60",
+              "role": "表格内容",
+              "reference_position_legacy": "动态与电气限制表，第六行第五列",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_128",
+              "content": "ms",
+              "role": "表格内容",
+              "reference_position_legacy": "动态与电气限制表，第六行第六列",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            }
+          ],
+          "formatted_content": "PARAMETER | SYMBOL | MIN | TYP | MAX | UNIT\nAileron deflection | dA | -25 | 0 | +25 | deg\nElevator deflection | dE | -30 | 0 | +20 | deg\nRudder deflection | dR | -35 | 0 | +35 | deg\nFLAP Travel range | dF | 0 | 15 | 40 | deg\nSupply Voltage Vcc | Vcc | 4.75 | 5.0 | 5.25 | V\nResponse Latency | Td |  | 45 | 60 | ms",
+          "mapping_status": "two_pass_model_visual_audit_not_human",
+          "geometry_status": "regrouped_reference_boxes_not_rebuilt",
+          "table": {
+            "headers": [
+              [
+                88
+              ],
+              [
+                89
+              ],
+              [
+                90
+              ],
+              [
+                91
+              ],
+              [
+                92
+              ],
+              [
+                93
+              ]
+            ],
+            "rows": [
+              [
+                [
+                  94
+                ],
+                [
+                  95
+                ],
+                [
+                  96
+                ],
+                [
+                  97
+                ],
+                [
+                  98
+                ],
+                [
+                  99
+                ]
+              ],
+              [
+                [
+                  100
+                ],
+                [
+                  101
+                ],
+                [
+                  102
+                ],
+                [
+                  103
+                ],
+                [
+                  104
+                ],
+                [
+                  105
+                ]
+              ],
+              [
+                [
+                  106
+                ],
+                [
+                  107
+                ],
+                [
+                  108
+                ],
+                [
+                  109
+                ],
+                [
+                  110
+                ],
+                [
+                  111
+                ]
+              ],
+              [
+                [
+                  112
+                ],
+                [
+                  113
+                ],
+                [
+                  114
+                ],
+                [
+                  115
+                ],
+                [
+                  116
+                ],
+                [
+                  117
+                ]
+              ],
+              [
+                [
+                  118
+                ],
+                [
+                  119
+                ],
+                [
+                  120
+                ],
+                [
+                  121
+                ],
+                [
+                  122
+                ],
+                [
+                  123
+                ]
+              ],
+              [
+                [
+                  124
+                ],
+                [
+                  125
+                ],
+                [],
+                [
+                  126
+                ],
+                [
+                  127
+                ],
+                [
+                  128
+                ]
+              ]
+            ],
+            "columns": 6,
+            "source": "visual_audit",
+            "cell_ids": "legacy_numeric_text_ids"
+          }
+        },
+        {
+          "id": "text_14",
+          "label": "绝对最大额定值",
+          "type": "info_card",
+          "source_text_ids": [
+            "text_129",
+            "text_130",
+            "text_131",
+            "text_132",
+            "text_133",
+            "text_134"
+          ],
+          "source_region_ids": [
+            "region_11"
+          ],
+          "items": [
+            {
+              "source_text_id": "text_129",
+              "content": "ABSOLUTE MAXIMUM RATINGS",
+              "role": "子标题",
+              "reference_position_legacy": "动态与电气限制表下方，红色背景框内",
+              "reference_typography_legacy": "白色，常规字号，粗体，大写"
+            },
+            {
+              "source_text_id": "text_130",
+              "content": "Supply Voltage (Vcc): -0.5 V to +7.0 V",
+              "role": "列表项",
+              "reference_position_legacy": "绝对最大额定值，第一项",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_131",
+              "content": "Max Hydraulic Pressure: 3000 PSI nominal / 3500 PSI transient",
+              "role": "列表项",
+              "reference_position_legacy": "绝对最大额定值，第二项",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_132",
+              "content": "Operating Temperature Range: -55°C to +125°C",
+              "role": "列表项",
+              "reference_position_legacy": "绝对最大额定值，第三项",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_133",
+              "content": "Structural Load Limit: +6.0g / -3.0g",
+              "role": "列表项",
+              "reference_position_legacy": "绝对最大额定值，第四项",
+              "reference_typography_legacy": "黑色，常规字号，常规字重"
+            },
+            {
+              "source_text_id": "text_134",
+              "content": "WARNING: Stresses beyond those listed under ratings may cause permanent damage.",
+              "role": "警告信息",
+              "reference_position_legacy": "绝对最大额定值，警告信息",
+              "reference_typography_legacy": "红色，常规字号，粗体"
+            }
+          ],
+          "formatted_content": "ABSOLUTE MAXIMUM RATINGS\nSupply Voltage (Vcc): -0.5 V to +7.0 V\nMax Hydraulic Pressure: 3000 PSI nominal / 3500 PSI transient\nOperating Temperature Range: -55°C to +125°C\nStructural Load Limit: +6.0g / -3.0g\nWARNING: Stresses beyond those listed under ratings may cause permanent damage.",
+          "mapping_status": "two_pass_model_visual_audit_not_human",
+          "geometry_status": "regrouped_reference_boxes_not_rebuilt"
+        },
+        {
+          "id": "text_15",
+          "label": "底部注释",
+          "type": "note",
+          "source_text_ids": [
+            "text_135"
+          ],
+          "source_region_ids": [
+            "region_12"
+          ],
+          "items": [
+            {
+              "source_text_id": "text_135",
+              "content": "Note: Command inputs are processed by dual-redundant logic channels. The fault detection line (Pin 9) asserts high when differential monitoring detects surface discrepancy > 2.5 degrees.",
+              "role": "注释",
+              "reference_position_legacy": "页面底部左侧，注释",
+              "reference_typography_legacy": "黑色，小字号，常规字重"
+            }
+          ],
+          "formatted_content": "Note: Command inputs are processed by dual-redundant logic channels. The fault detection line (Pin 9) asserts high when differential monitoring detects surface discrepancy > 2.5 degrees.",
+          "mapping_status": "two_pass_model_visual_audit_not_human",
+          "geometry_status": "regrouped_reference_boxes_not_rebuilt"
+        },
+        {
+          "id": "text_16",
+          "label": "页脚",
+          "type": "footer",
+          "source_text_ids": [
+            "text_136"
+          ],
+          "source_region_ids": [
+            "region_13"
+          ],
+          "items": [
+            {
+              "source_text_id": "text_136",
+              "content": "AERO-LOGIC SEMICONDUCTOR CORP. • 1200 AVIONICS PARKWAY, SUITE 8B • TEL: (800) 555-0196",
+              "role": "页脚",
+              "reference_position_legacy": "页面底部中央，页脚",
+              "reference_typography_legacy": "黑色，小字号，常规字重"
+            }
+          ],
+          "formatted_content": "AERO-LOGIC SEMICONDUCTOR CORP. • 1200 AVIONICS PARKWAY, SUITE 8B • TEL: (800) 555-0196",
+          "mapping_status": "two_pass_model_visual_audit_not_human",
+          "geometry_status": "regrouped_reference_boxes_not_rebuilt"
+        }
+      ]
+    },
+    {
+  
