@@ -1,0 +1,1916 @@
+{
+  "title_en": "From prompt requirements to D3 presentation checks",
+  "title_cn": "从提示要求到D3呈现检查项",
+  "provenance": {
+    "prompts": {
+      "file": "/home/wx1522744/zhaoqianqian/project/TextCanvasBench_up_final/00_input/prompt/prompt.jsonl",
+      "sha256": "7f3b451d71a3f3b2e6d7cc42e838cb3f4c8c381b040202f8a2b45815222c5141"
+    },
+    "d3": {
+      "file": "/home/wx1522744/zhaoqianqian/project/TextCanvasBench_up_final/02_D3/release/d3_specs.jsonl",
+      "sha256": "0f888db38ea606461f8bfed5a5e0c6937ebaa47063c2d76cf428af82570a87bf"
+    },
+    "inventory": {
+      "file": "/home/wx1522744/zhaoqianqian/project/TextCanvasBench_up_final/02_D3/release/target_inventory.jsonl",
+      "sha256": "71351bd6a7baa183c3257f7c82652f3fbdf754f5b617e8caacfdc3a68cb00f80"
+    },
+    "d4": {
+      "file": "/home/wx1522744/zhaoqianqian/project/TextCanvasBench_up_final/03_D4/specs/d4_specs.jsonl",
+      "sha256": "038f95d7d7b550cfffe7b20787511544f031a202666d3514f4e0b3982c40eb83"
+    }
+  },
+  "sample": {
+    "sample_id": "textcanvasbench_000007",
+    "domain": "信息图类",
+    "reference_image": "reference_images/textcanvasbench_000007.jpg",
+    "reference_role": "construction illustration only; reference geometry is not a generated-image scoring target",
+    "prompt_cn": "这是一张关于网络体系结构的信息图表，背景为浅米色。图像顶部是黑色的衬线体大标题“NETWORK ARCHITECTURES”和一段介绍性文字。页面主体内容被划分为多个区域：左上角的“I. The Stack Comparison”区域，通过并列的蓝色（OSI模型）和绿色（TCP/IP模型）方框图，直观对比了两种网络模型的层级结构，并用虚线连接对应层级。右侧是“III. Field Notes”和“IV. Constants”两个区域，前者以列表形式解释了物理层、网络层等关键层级的功能，后者列出了端口范围规范；旁边还有一个倾斜的红色印章，上面写着“APPROVED STANDARD 1984”。图像左下角是“II. Protocol Data Taxonomy”区域，以表格形式详细列出了各网络层级的“Data Unit (PDU)”、“Core Protocols”和“Addressing”方式。右下角则是一个同心圆示意图，展示了“ENCAPSULATION”的概念。整张图的阅读顺序由罗马数字编号引导，需要在不同位置的区域间跳转，并非简单的线性阅读。字体上，标题使用衬线体，正文多为无衬线体，形成了风格对比。\n\n表格列顺序为Layer、Data Unit (PDU)、Core Protocols、Addressing，各数据行保持对应关系。",
+    "prompt_en": "This image is an infographic about network architectures, set against a light beige background. At the top, the title \"NETWORK ARCHITECTURES\" is displayed in a large, black serif font, followed by an introductory paragraph. The main content is divided into multiple regions. The top-left section, \"I. The Stack Comparison,\" visually contrasts the OSI and TCP/IP models using side-by-side diagrams with blue boxes (OSI) and green boxes (TCP/IP), with dotted lines connecting corresponding layers. On the right are the \"III. Field Notes\" and \"IV. Constants\" sections; the former is a list explaining the functions of key layers like the Physical and Network layers, while the latter specifies port ranges. Adjacent to this is a tilted red stamp reading \"APPROVED STANDARD 1984.\" The bottom-left section, \"II. Protocol Data Taxonomy,\" is a table detailing the \"Data Unit (PDU),\" \"Core Protocols,\" and \"Addressing\" methods for each network layer. In the bottom-right, a concentric circle diagram illustrates the concept of \"ENCAPSULATION.\" The reading order is non-linear, guided by Roman numerals that require jumping between sections. A mix of serif fonts for titles and sans-serif for body text creates a stylistic contrast.\n\nThe table columns are Layer, Data Unit (PDU), Core Protocols, and Addressing, with each data row aligned accordingly.",
+    "generation_format_instructions": {
+      "cn": "以下必须文字按独立表达区域组织。区域编号、方括号中的类型说明以及表格分隔符“|”均为输入结构标记，不作为画面文字。表格内同一行的内容从左至右对应各列，换行表示下一行；重复文字按所在位置分别呈现。区域的视觉布局遵循上述描述。\n画面文字以所附 text_blocks 的 items.content 为准。描述语言不改变画面文字语言：逐字保留原语言、原拼写、数字、标点及真实双语内容，不翻译、不音译、不补充括号释义，不修正文案。描述与清单不一致时采用清单。区域编号、文字编号、JSON 标点和转义表示仅用于组织输入，不要画出；解码字符串中的换行并按指定区域和顺序排版。",
+      "en": "The required text below is grouped by independent visual region. Region IDs, bracketed type labels, and the table separator \"|\" are input structure markers, not visible lettering. Within each table, cells on a line occupy successive columns from left to right; each new line is the next row. Preserve repeated text at its respective locations. Follow the visual layout described above.\nUse the attached text_blocks items.content as the authoritative visible lettering. The language of the description does not change the language of the lettering. Preserve the original language, spelling, numbers, punctuation, and genuine bilingual content verbatim. Do not translate, transliterate, add parenthetical meanings, or correct the wording. If the prose conflicts with the inventory, use the inventory. Region IDs, text IDs, JSON syntax, and escape notation only organize the input and must not be rendered. Decode newlines inside strings and lay out each entry in its specified region and order.",
+      "table_cell_escaping": "Cells containing pipes, quotes or newlines are JSON strings; decode escapes as literal cell content. Region labels and separators are metadata."
+    },
+    "text_blocks": [
+      {
+        "id": "text_1",
+        "label": "主标题",
+        "type": "header",
+        "source_text_ids": [
+          "text_1"
+        ],
+        "source_region_ids": [
+          "region_1"
+        ],
+        "items": [
+          {
+            "source_text_id": "text_1",
+            "content": "NETWORK ARCHITECTURES",
+            "role": "标题",
+            "reference_position_legacy": "顶部中央",
+            "reference_typography_legacy": "黑色，大字号，粗体，居中"
+          }
+        ],
+        "formatted_content": "NETWORK ARCHITECTURES",
+        "mapping_status": "two_pass_model_visual_audit_not_human",
+        "geometry_status": "regrouped_reference_boxes_not_rebuilt"
+      },
+      {
+        "id": "text_2",
+        "label": "引言段落",
+        "type": "paragraph",
+        "source_text_ids": [
+          "text_2"
+        ],
+        "source_region_ids": [
+          "region_2"
+        ],
+        "items": [
+          {
+            "source_text_id": "text_2",
+            "content": "A comparative study of the Open Systems Interconnection (OSI) and the Transmission Control Protocol / Internet Protocol (TCP/IP) frameworks. These models define the standards for communication across heterogeneous hardware systems, ensuring the reliable transfer of data packets from origin to destination across the global digital landscape.",
+            "role": "正文",
+            "reference_position_legacy": "标题下方中央",
+            "reference_typography_legacy": "黑色，中等字号，常规，两端对齐"
+          }
+        ],
+        "formatted_content": "A comparative study of the Open Systems Interconnection (OSI) and the Transmission Control Protocol / Internet Protocol (TCP/IP) frameworks. These models define the standards for communication across heterogeneous hardware systems, ensuring the reliable transfer of data packets from origin to destination across the global digital landscape.",
+        "mapping_status": "two_pass_model_visual_audit_not_human",
+        "geometry_status": "regrouped_reference_boxes_not_rebuilt"
+      },
+      {
+        "id": "text_3",
+        "label": "I. 堆栈对比区域",
+        "type": "section",
+        "source_text_ids": [
+          "text_3",
+          "text_5",
+          "text_6",
+          "text_7",
+          "text_8",
+          "text_9",
+          "text_10",
+          "text_11",
+          "text_12",
+          "text_13",
+          "text_14",
+          "text_15",
+          "text_20",
+          "text_21"
+        ],
+        "source_region_ids": [
+          "region_3",
+          "region_4"
+        ],
+        "items": [
+          {
+            "source_text_id": "text_3",
+            "content": "I. The Stack Comparison",
+            "role": "标题",
+            "reference_position_legacy": "左侧中部",
+            "reference_typography_legacy": "白色，中等字号，粗体，左对齐"
+          },
+          {
+            "source_text_id": "text_5",
+            "content": "7. Application Layer",
+            "role": "标签",
+            "reference_position_legacy": "左侧堆栈图顶部",
+            "reference_typography_legacy": "白色，小字号，常规，左对齐"
+          },
+          {
+            "source_text_id": "text_6",
+            "content": "Application Layer (TCP)",
+            "role": "标签",
+            "reference_position_legacy": "右侧堆栈图顶部",
+            "reference_typography_legacy": "白色，小字号，常规，左对齐"
+          },
+          {
+            "source_text_id": "text_7",
+            "content": "6. Presentation Layer",
+            "role": "标签",
+            "reference_position_legacy": "左侧堆栈图上部",
+            "reference_typography_legacy": "白色，小字号，常规，左对齐"
+          },
+          {
+            "source_text_id": "text_8",
+            "content": "5. Session Layer",
+            "role": "标签",
+            "reference_position_legacy": "左侧堆栈图上部",
+            "reference_typography_legacy": "白色，小字号，常规，左对齐"
+          },
+          {
+            "source_text_id": "text_9",
+            "content": "4. Transport Layer",
+            "role": "标签",
+            "reference_position_legacy": "左侧堆栈图中部",
+            "reference_typography_legacy": "白色，小字号，常规，左对齐"
+          },
+          {
+            "source_text_id": "text_10",
+            "content": "Transport Layer",
+            "role": "标签",
+            "reference_position_legacy": "右侧堆栈图中部",
+            "reference_typography_legacy": "白色，小字号，常规，左对齐"
+          },
+          {
+            "source_text_id": "text_11",
+            "content": "3. Network Layer",
+            "role": "标签",
+            "reference_position_legacy": "左侧堆栈图中部",
+            "reference_typography_legacy": "白色，小字号，常规，左对齐"
+          },
+          {
+            "source_text_id": "text_12",
+            "content": "Internet Layer",
+            "role": "标签",
+            "reference_position_legacy": "右侧堆栈图中部",
+            "reference_typography_legacy": "白色，小字号，常规，左对齐"
+          },
+          {
+            "source_text_id": "text_13",
+            "content": "2. Data Link Layer",
+            "role": "标签",
+            "reference_position_legacy": "左侧堆栈图下部",
+            "reference_typography_legacy": "白色，小字号，常规，左对齐"
+          },
+          {
+            "source_text_id": "text_14",
+            "content": "Network Interface",
+            "role": "标签",
+            "reference_position_legacy": "右侧堆栈图下部",
+            "reference_typography_legacy": "白色，小字号，常规，左对齐"
+          },
+          {
+            "source_text_id": "text_15",
+            "content": "1. Physical Layer",
+            "role": "标签",
+            "reference_position_legacy": "左侧堆栈图底部",
+            "reference_typography_legacy": "白色，小字号"
+          },
+          {
+            "source_text_id": "text_20",
+            "content": "Left: OSI 7-Layer Abstract Model",
+            "role": "标签",
+            "reference_position_legacy": "左侧堆栈图下方",
+            "reference_typography_legacy": "黑色，小字号，常规，左对齐"
+          },
+          {
+            "source_text_id": "text_21",
+            "content": "Right: TCP/IP Practical Protocol Suite",
+            "role": "标签",
+            "reference_position_legacy": "右侧堆栈图下方",
+            "reference_typography_legacy": "黑色，小字号"
+          }
+        ],
+        "formatted_content": "I. The Stack Comparison\n\n7. Application Layer\n6. Presentation Layer\n5. Session Layer\n4. Transport Layer\n3. Network Layer\n2. Data Link Layer\n1. Physical Layer\n\nApplication Layer (TCP)\nTransport Layer\nInternet Layer\nNetwork Interface\n\nLeft: OSI 7-Layer Abstract Model\n\nRight: TCP/IP Practical Protocol Suite",
+        "mapping_status": "two_pass_model_visual_audit_not_human",
+        "geometry_status": "regrouped_reference_boxes_not_rebuilt",
+        "sequences": [
+          [
+            5,
+            7,
+            8,
+            9,
+            11,
+            13,
+            15
+          ],
+          [
+            6,
+            10,
+            12,
+            14
+          ]
+        ]
+      },
+      {
+        "id": "text_4",
+        "label": "II. 协议数据分类区域",
+        "type": "table",
+        "source_text_ids": [
+          "text_28",
+          "text_29",
+          "text_30",
+          "text_31",
+          "text_32",
+          "text_33",
+          "text_34",
+          "text_35",
+          "text_36",
+          "text_37",
+          "text_38",
+          "text_39",
+          "text_40",
+          "text_41",
+          "text_42",
+          "text_43",
+          "text_44",
+          "text_45",
+          "text_46",
+          "text_47",
+          "text_48",
+          "text_49",
+          "text_50",
+          "text_51",
+          "text_52"
+        ],
+        "source_region_ids": [
+          "region_10",
+          "region_9"
+        ],
+        "items": [
+          {
+            "source_text_id": "text_28",
+            "content": "II. Protocol Data Taxonomy",
+            "role": "标题",
+            "reference_position_legacy": "左侧底部",
+            "reference_typography_legacy": "白色，中等字号，粗体，左对齐"
+          },
+          {
+            "source_text_id": "text_29",
+            "content": "Layer",
+            "role": "表格标题",
+            "reference_position_legacy": "表格标题行，第一列",
+            "reference_typography_legacy": "白色，小字号，常规，居中"
+          },
+          {
+            "source_text_id": "text_30",
+            "content": "Data Unit (PDU)",
+            "role": "表格标题",
+            "reference_position_legacy": "表格标题行，第二列",
+            "reference_typography_legacy": "白色，小字号"
+          },
+          {
+            "source_text_id": "text_31",
+            "content": "Core Protocols",
+            "role": "表格标题",
+            "reference_position_legacy": "表格标题行，第三列",
+            "reference_typography_legacy": "白色，小字号"
+          },
+          {
+            "source_text_id": "text_32",
+            "content": "Addressing",
+            "role": "表格标题",
+            "reference_position_legacy": "表格标题行，第四列",
+            "reference_typography_legacy": "白色，小字号"
+          },
+          {
+            "source_text_id": "text_33",
+            "content": "Application",
+            "role": "表格单元格",
+            "reference_position_legacy": "表格第一行，第一列",
+            "reference_typography_legacy": "黑色，小字号"
+          },
+          {
+            "source_text_id": "text_34",
+            "content": "Data / Message",
+            "role": "表格单元格",
+            "reference_position_legacy": "表格第一行，第二列",
+            "reference_typography_legacy": "黑色，小字号"
+          },
+          {
+            "source_text_id": "text_35",
+            "content": "HTTP, DNS, FTP, SMTP",
+            "role": "表格单元格",
+            "reference_position_legacy": "表格第一行，第三列",
+            "reference_typography_legacy": "黑色，小字号"
+          },
+          {
+            "source_text_id": "text_36",
+            "content": "Domain Name",
+            "role": "表格单元格",
+            "reference_position_legacy": "表格第一行，第四列",
+            "reference_typography_legacy": "黑色，小字号"
+          },
+          {
+            "source_text_id": "text_37",
+            "content": "Transport",
+            "role": "表格单元格",
+            "reference_position_legacy": "表格第二行，第一列",
+            "reference_typography_legacy": "黑色，小字号"
+          },
+          {
+            "source_text_id": "text_38",
+            "content": "Segment (TCP) / Datagram",
+            "role": "表格单元格",
+            "reference_position_legacy": "表格第二行，第二列",
+            "reference_typography_legacy": "黑色，小字号"
+          },
+          {
+            "source_text_id": "text_39",
+            "content": "TCP, UDP",
+            "role": "表格单元格",
+            "reference_position_legacy": "表格第二行，第三列",
+            "reference_typography_legacy": "黑色，小字号"
+          },
+          {
+            "source_text_id": "text_40",
+            "content": "Port Number",
+            "role": "表格单元格",
+            "reference_position_legacy": "表格第二行，第四列",
+            "reference_typography_legacy": "黑色，小字号"
+          },
+          {
+            "source_text_id": "text_41",
+            "content": "Network",
+            "role": "表格单元格",
+            "reference_position_legacy": "表格第三行，第一列",
+            "reference_typography_legacy": "黑色，小字号"
+          },
+          {
+            "source_text_id": "text_42",
+            "content": "Packet",
+            "role": "表格单元格",
+            "reference_position_legacy": "表格第三行，第二列",
+            "reference_typography_legacy": "黑色，小字号"
+          },
+          {
+            "source_text_id": "text_43",
+            "content": "IP (IPv4/v6), ICMP",
+            "role": "表格单元格",
+            "reference_position_legacy": "表格第三行，第三列",
+            "reference_typography_legacy": "黑色，小字号"
+          },
+          {
+            "source_text_id": "text_44",
+            "content": "IP Address",
+            "role": "表格单元格",
+            "reference_position_legacy": "表格第三行，第四列",
+            "reference_typography_legacy": "黑色，小字号"
+          },
+          {
+            "source_text_id": "text_45",
+            "content": "Data Link",
+            "role": "表格单元格",
+            "reference_position_legacy": "表格第四行，第一列",
+            "reference_typography_legacy": "黑色，小字号"
+          },
+          {
+            "source_text_id": "text_46",
+            "content": "Frame",
+            "role": "表格单元格",
+            "reference_position_legacy": "表格第四行，第二列",
+            "reference_typography_legacy": "黑色，小字号"
+          },
+          {
+            "source_text_id": "text_47",
+            "content": "Ethernet, Wi-Fi, ARP",
+            "role": "表格单元格",
+            "reference_position_legacy": "表格第四行，第三列",
+            "reference_typography_legacy": "黑色，小字号"
+          },
+          {
+            "source_text_id": "text_48",
+            "content": "MAC Address",
+            "role": "表格单元格",
+            "reference_position_legacy": "表格第四行，第四列",
+            "reference_typography_legacy": "黑色，小字号"
+          },
+          {
+            "source_text_id": "text_49",
+            "content": "Physical",
+            "role": "表格单元格",
+            "reference_position_legacy": "表格第五行，第一列",
+            "reference_typography_legacy": "黑色，小字号"
+          },
+          {
+            "source_text_id": "text_50",
+            "content": "Bit stream",
+            "role": "表格单元格",
+            "reference_position_legacy": "表格第五行，第二列",
+            "reference_typography_legacy": "黑色，小字号"
+          },
+          {
+            "source_text_id": "text_51",
+            "content": "DSL, IEEE 802.3, Hub",
+            "role": "表格单元格",
+            "reference_position_legacy": "表格第五行，第三列",
+            "reference_typography_legacy": "黑色，小字号"
+          },
+          {
+            "source_text_id": "text_52",
+            "content": "Physical Voltage",
+            "role": "表格单元格",
+            "reference_position_legacy": "表格第五行，第四列",
+            "reference_typography_legacy": "黑色，小字号"
+          }
+        ],
+        "formatted_content": "II. Protocol Data Taxonomy\nLayer | Data Unit (PDU) | Core Protocols | Addressing\nApplication | Data / Message | HTTP, DNS, FTP, SMTP | Domain Name\nTransport | Segment (TCP) / Datagram | TCP, UDP | Port Number\nNetwork | Packet | IP (IPv4/v6), ICMP | IP Address\nData Link | Frame | Ethernet, Wi-Fi, ARP | MAC Address\nPhysical | Bit stream | DSL, IEEE 802.3, Hub | Physical Voltage",
+        "mapping_status": "two_pass_model_visual_audit_not_human",
+        "geometry_status": "regrouped_reference_boxes_not_rebuilt",
+        "table": {
+          "headers": [
+            [
+              29
+            ],
+            [
+              30
+            ],
+            [
+              31
+            ],
+            [
+              32
+            ]
+          ],
+          "rows": [
+            [
+              [
+                33
+              ],
+              [
+                34
+              ],
+              [
+                35
+              ],
+              [
+                36
+              ]
+            ],
+            [
+              [
+                37
+              ],
+              [
+                38
+              ],
+              [
+                39
+              ],
+              [
+                40
+              ]
+            ],
+            [
+              [
+                41
+              ],
+              [
+                42
+              ],
+              [
+                43
+              ],
+              [
+                44
+              ]
+            ],
+            [
+              [
+                45
+              ],
+              [
+                46
+              ],
+              [
+                47
+              ],
+              [
+                48
+              ]
+            ],
+            [
+              [
+                49
+              ],
+              [
+                50
+              ],
+              [
+                51
+              ],
+              [
+                52
+              ]
+            ]
+          ],
+          "columns": 4,
+          "source": "visual_audit",
+          "cell_ids": "legacy_numeric_text_ids"
+        }
+      },
+      {
+        "id": "text_5",
+        "label": "III. 现场笔记区域",
+        "type": "section",
+        "source_text_ids": [
+          "text_4",
+          "text_16",
+          "text_17",
+          "text_18",
+          "text_19"
+        ],
+        "source_region_ids": [
+          "region_5",
+          "region_6"
+        ],
+        "items": [
+          {
+            "source_text_id": "text_4",
+            "content": "III. Field Notes",
+            "role": "标题",
+            "reference_position_legacy": "右侧中部",
+            "reference_typography_legacy": "白色，中等字号，粗体，左对齐"
+          },
+          {
+            "source_text_id": "text_16",
+            "content": "01 Physical Layer (L1): The foundation of all transit. It encompasses the raw transmission of bits over physical media including copper wires, fiber optics, or radio waves.",
+            "role": "正文",
+            "reference_position_legacy": "右侧“Field Notes”下方",
+            "reference_typography_legacy": "黑色，小字号，常规，两端对齐"
+          },
+          {
+            "source_text_id": "text_17",
+            "content": "02 Network Layer (L3): Responsible for packet forwarding and routing. It utilizes logical IP addresses to find paths across multiple network nodes.",
+            "role": "正文",
+            "reference_position_legacy": "右侧“Field Notes”下方",
+            "reference_typography_legacy": "黑色，小字号"
+          },
+          {
+            "source_text_id": "text_18",
+            "content": "03 Transport Layer (L4): Manages end-to-end communication. TCP provides reliable delivery via handshakes, whereas UDP prioritizes speed over integrity.",
+            "role": "正文",
+            "reference_position_legacy": "右侧“Field Notes”下方",
+            "reference_typography_legacy": "黑色，小字号"
+          },
+          {
+            "source_text_id": "text_19",
+            "content": "04 Application (L7): The interface for users. HTTP for web browsing, SMTP for mail, and SSH for secure remote management operate here.",
+            "role": "正文",
+            "reference_position_legacy": "右侧“Field Notes”下方",
+            "reference_typography_legacy": "黑色，小字号"
+          }
+        ],
+        "formatted_content": "III. Field Notes\n01 Physical Layer (L1): The foundation of all transit. It encompasses the raw transmission of bits over physical media including copper wires, fiber optics, or radio waves.\n02 Network Layer (L3): Responsible for packet forwarding and routing. It utilizes logical IP addresses to find paths across multiple network nodes.\n03 Transport Layer (L4): Manages end-to-end communication. TCP provides reliable delivery via handshakes, whereas UDP prioritizes speed over integrity.\n04 Application (L7): The interface for users. HTTP for web browsing, SMTP for mail, and SSH for secure remote management operate here.",
+        "mapping_status": "two_pass_model_visual_audit_not_human",
+        "geometry_status": "regrouped_reference_boxes_not_rebuilt"
+      },
+      {
+        "id": "text_6",
+        "label": "IV. 常量区域",
+        "type": "section",
+        "source_text_ids": [
+          "text_22",
+          "text_23",
+          "text_24",
+          "text_25",
+          "text_26",
+          "text_27"
+        ],
+        "source_region_ids": [
+          "region_7",
+          "region_8"
+        ],
+        "items": [
+          {
+            "source_text_id": "text_22",
+            "content": "IV. Constants",
+            "role": "标题",
+            "reference_position_legacy": "右侧中部",
+            "reference_typography_legacy": "白色，中等字号，粗体，左对齐"
+          },
+          {
+            "source_text_id": "text_23",
+            "content": "Port Range Specification",
+            "role": "标签",
+            "reference_position_legacy": "右侧“Constants”下方",
+            "reference_typography_legacy": "黑色，小字号，粗体，左对齐"
+          },
+          {
+            "source_text_id": "text_24",
+            "content": "Total Ports: 65,535",
+            "role": "标签",
+            "reference_position_legacy": "右侧“Port Range Specification”下方",
+            "reference_typography_legacy": "黑色，小字号"
+          },
+          {
+            "source_text_id": "text_25",
+            "content": "Well-Known: 0 - 1,023",
+            "role": "标签",
+            "reference_position_legacy": "右侧“Total Ports”下方",
+            "reference_typography_legacy": "黑色，小字号"
+          },
+          {
+            "source_text_id": "text_26",
+            "content": "Registered: 1,024 - 49,151",
+            "role": "标签",
+            "reference_position_legacy": "右侧“Well-Known”下方",
+            "reference_typography_legacy": "黑色，小字号"
+          },
+          {
+            "source_text_id": "text_27",
+            "content": "Dynamic: 49,152 - 65,535",
+            "role": "标签",
+            "reference_position_legacy": "右侧“Registered”下方",
+            "reference_typography_legacy": "黑色，小字号"
+          }
+        ],
+        "formatted_content": "IV. Constants\nPort Range Specification\nTotal Ports: 65,535\nWell-Known: 0 - 1,023\nRegistered: 1,024 - 49,151\nDynamic: 49,152 - 65,535",
+        "mapping_status": "two_pass_model_visual_audit_not_human",
+        "geometry_status": "regrouped_reference_boxes_not_rebuilt"
+      },
+      {
+        "id": "text_7",
+        "label": "红色印章",
+        "type": "note",
+        "source_text_ids": [
+          "text_53"
+        ],
+        "source_region_ids": [
+          "region_11"
+        ],
+        "items": [
+          {
+            "source_text_id": "text_53",
+            "content": "APPROVED STANDARD 1984",
+            "role": "标签",
+            "reference_position_legacy": "右侧中部，红色印章",
+            "reference_typography_legacy": "白色，中等字号，粗体，倾斜，居中"
+          }
+        ],
+        "formatted_content": "APPROVED STANDARD 1984",
+        "mapping_status": "two_pass_model_visual_audit_not_human",
+        "geometry_status": "regrouped_reference_boxes_not_rebuilt"
+      },
+      {
+        "id": "text_8",
+        "label": "封装示意图",
+        "type": "diagram",
+        "source_text_ids": [
+          "text_54"
+        ],
+        "source_region_ids": [
+          "region_12"
+        ],
+        "items": [
+          {
+            "source_text_id": "text_54",
+            "content": "ENCAPSULATION",
+            "role": "标签",
+            "reference_position_legacy": "右侧底部，圆形图中央",
+            "reference_typography_legacy": "黑色，中等字号，常规，居中"
+          }
+        ],
+        "formatted_content": "ENCAPSULATION",
+        "mapping_status": "two_pass_model_visual_audit_not_human",
+        "geometry_status": "regrouped_reference_boxes_not_rebuilt"
+      },
+      {
+        "id": "text_9",
+        "label": "页脚",
+        "type": "footer",
+        "source_text_ids": [
+          "text_55",
+          "text_56"
+        ],
+        "source_region_ids": [
+          "region_13",
+          "region_14"
+        ],
+        "items": [
+          {
+            "source_text_id": "text_55",
+            "content": "Ref: ISO/IEC 7498-1:1994",
+            "role": "页脚",
+            "reference_position_legacy": "左下角",
+            "reference_typography_legacy": "黑色，小字号，常规，左对齐"
+          },
+          {
+            "source_text_id": "text_56",
+            "content": "Plate No. 042 / Network Encyclopedia",
+            "role": "页脚",
+            "reference_position_legacy": "右下角",
+            "reference_typography_legacy": "黑色，小字号"
+          }
+        ],
+        "formatted_content": "Ref: ISO/IEC 7498-1:1994\nPlate No. 042 / Network Encyclopedia",
+        "mapping_status": "two_pass_model_visual_audit_not_human",
+        "geometry_status": "regrouped_reference_boxes_not_rebuilt"
+      }
+    ]
+  },
+  "layout": {
+    "panels": [
+      {
+        "label": "a",
+        "title_en": "Final input",
+        "content": "Reference thumbnail + short quoted prompt phrases; full text in this JSON."
+      },
+      {
+        "label": "b",
+        "title_en": "Target binding",
+        "content": "Link each phrase to an identified text instance or table header group."
+      },
+      {
+        "label": "c",
+        "title_en": "Presentation checklist",
+        "content": "Six attribute cards with target, quantifier and criterion."
+      }
+    ],
+    "reading_direction": "left to right",
+    "annotation": "Construction example; no generated-image verdicts or measured boxes are included."
+  },
+  "cards": [
+    {
+      "attribute": "region",
+      "source_quote_cn": "图像顶部",
+      "source_quote_role": "literal excerpt selected for this figure, not an extra field in the compact released spec",
+      "display_label_en": "Title at the top",
+      "suggested_visual_en": "Show the title and a top-of-canvas guide.",
+      "target_texts": [
+        {
+          "id": "t001",
+          "text": "NETWORK ARCHITECTURES",
+          "region_id": "r001",
+          "role": "标题"
+        }
+      ],
+      "released_check": {
+        "check_id": "textcanvasbench_000007.check.001",
+        "requirement": "主标题位于页面顶部",
+        "targets": {
+          "subjects": [
+            "t001"
+          ],
+          "reference_frame": "canvas"
+        },
+        "quantifier": "each",
+        "criterion": {
+          "operator": "inside",
+          "expected": {
+            "value": "top"
+          },
+          "position_constraint": {
+            "coordinate_space": "normalized_xyxy",
+            "reference_frame": "canvas",
+            "allowed_range": [
+              0,
+              0,
+              1,
+              0.333333
+            ],
+            "range_source": "rules.json:region_boxes.top",
+            "measure": "generated_target_union_center",
+            "boundary_tolerance": 0.05,
+            "reference_bbox_used": false
+          }
+        }
+      }
+    },
+    {
+      "attribute": "order",
+      "source_quote_cn": "表格列顺序为Layer、Data Unit (PDU)、Core Protocols、Addressing",
+      "source_quote_role": "literal excerpt selected for this figure, not an extra field in the compact released spec",
+      "display_label_en": "Layer → PDU → Protocols → Addressing",
+      "suggested_visual_en": "Draw an arrow across the four table headers.",
+      "target_texts": [
+        {
+          "id": "t029",
+          "text": "Layer",
+          "region_id": "r004",
+          "role": "表格标题"
+        },
+        {
+          "id": "t030",
+          "text": "Data Unit (PDU)",
+          "region_id": "r004",
+          "role": "表格标题"
+        },
+        {
+          "id": "t031",
+          "text": "Core Protocols",
+          "region_id": "r004",
+          "role": "表格标题"
+        },
+        {
+          "id": "t032",
+          "text": "Addressing",
+          "region_id": "r004",
+          "role": "表格标题"
+        }
+      ],
+      "released_check": {
+        "check_id": "textcanvasbench_000007.check.016",
+        "requirement": "表格列顺序为Layer, Data Unit (PDU), Core Protocols, Addressing",
+        "targets": {
+          "subjects": [
+            "t029",
+            "t030",
+            "t031",
+            "t032"
+          ],
+          "objects": [
+            "table_r004"
+          ],
+          "reference_frame": "none"
+        },
+        "quantifier": "each",
+        "criterion": {
+          "operator": "table_column_order",
+          "expected": {
+            "value": "Layer, Data Unit (PDU), Core Protocols, Addressing"
+          }
+        }
+      }
+    },
+    {
+      "attribute": "hierarchy",
+      "source_quote_cn": "大标题",
+      "source_quote_role": "literal excerpt selected for this figure, not an extra field in the compact released spec",
+      "display_label_en": "Large main title",
+      "suggested_visual_en": "Highlight the title; do not invent a numerical size ratio.",
+      "target_texts": [
+        {
+          "id": "t001",
+          "text": "NETWORK ARCHITECTURES",
+          "region_id": "r001",
+          "role": "标题"
+        }
+      ],
+      "released_check": {
+        "check_id": "textcanvasbench_000007.check.004",
+        "requirement": "主标题字号为大号",
+        "targets": {
+          "subjects": [
+            "t001"
+          ],
+          "reference_frame": "none"
+        },
+        "quantifier": "each",
+        "criterion": {
+          "operator": "absolute_size",
+          "expected": {
+            "value": "large"
+          }
+        }
+      }
+    },
+    {
+      "attribute": "orientation",
+      "source_quote_cn": "倾斜的红色印章",
+      "source_quote_role": "literal excerpt selected for this figure, not an extra field in the compact released spec",
+      "display_label_en": "Tilted stamp text",
+      "suggested_visual_en": "Use an angled stamp callout.",
+      "target_texts": [
+        {
+          "id": "t053",
+          "text": "APPROVED STANDARD 1984",
+          "region_id": "r007",
+          "role": "标签"
+        }
+      ],
+      "released_check": {
+        "check_id": "textcanvasbench_000007.check.011",
+        "requirement": "印章文字呈倾斜状态",
+        "targets": {
+          "subjects": [
+            "t053"
+          ],
+          "reference_frame": "none"
+        },
+        "quantifier": "each",
+        "criterion": {
+          "operator": "angled",
+          "expected": {
+            "value": "tilted"
+          }
+        }
+      }
+    },
+    {
+      "attribute": "color",
+      "source_quote_cn": "黑色的衬线体大标题",
+      "source_quote_role": "literal excerpt selected for this figure, not an extra field in the compact released spec",
+      "display_label_en": "Black title text",
+      "suggested_visual_en": "Add a black swatch linked to the title.",
+      "target_texts": [
+        {
+          "id": "t001",
+          "text": "NETWORK ARCHITECTURES",
+          "region_id": "r001",
+          "role": "标题"
+        }
+      ],
+      "released_check": {
+        "check_id": "textcanvasbench_000007.check.002",
+        "requirement": "主标题文字颜色为黑色",
+        "targets": {
+          "subjects": [
+            "t001"
+          ],
+          "reference_frame": "none"
+        },
+        "quantifier": "each",
+        "criterion": {
+          "operator": "foreground_color",
+          "expected": {
+            "value": "black"
+          }
+        }
+      }
+    },
+    {
+      "attribute": "style",
+      "source_quote_cn": "标题使用衬线体",
+      "source_quote_role": "literal excerpt selected for this figure, not an extra field in the compact released spec",
+      "display_label_en": "Serif title",
+      "suggested_visual_en": "Show a magnified serif letter as a schematic glyph.",
+      "target_texts": [
+        {
+          "id": "t001",
+          "text": "NETWORK ARCHITECTURES",
+          "region_id": "r001",
+          "role": "标题"
+        }
+      ],
+      "released_check": {
+        "check_id": "textcanvasbench_000007.check.003",
+        "requirement": "主标题字体为衬线体",
+        "targets": {
+          "subjects": [
+            "t001"
+          ],
+          "reference_frame": "none"
+        },
+        "quantifier": "each",
+        "criterion": {
+          "operator": "font_family",
+          "expected": {
+            "value": "serif"
+          }
+        }
+      }
+    }
+  ],
+  "full_spec": {
+    "id": "textcanvasbench_000007",
+    "attributes": {
+      "region": [
+        {
+          "check_id": "textcanvasbench_000007.check.001",
+          "requirement": "主标题位于页面顶部",
+          "targets": {
+            "subjects": [
+              "t001"
+            ],
+            "reference_frame": "canvas"
+          },
+          "quantifier": "each",
+          "criterion": {
+            "operator": "inside",
+            "expected": {
+              "value": "top"
+            },
+            "position_constraint": {
+              "coordinate_space": "normalized_xyxy",
+              "reference_frame": "canvas",
+              "allowed_range": [
+                0,
+                0,
+                1,
+                0.333333
+              ],
+              "range_source": "rules.json:region_boxes.top",
+              "measure": "generated_target_union_center",
+              "boundary_tolerance": 0.05,
+              "reference_bbox_used": false
+            }
+          }
+        },
+        {
+          "check_id": "textcanvasbench_000007.check.005",
+          "requirement": "区域I标题位于页面左上角",
+          "targets": {
+            "subjects": [
+              "t003"
+            ],
+            "reference_frame": "canvas"
+          },
+          "quantifier": "each",
+          "criterion": {
+            "operator": "inside",
+            "expected": {
+              "value": "top_left"
+            },
+            "position_constraint": {
+              "coordinate_space": "normalized_xyxy",
+              "reference_frame": "canvas",
+              "allowed_range": [
+                0,
+                0,
+                0.333333,
+                0.333333
+              ],
+              "range_source": "rules.json:region_boxes.top_left",
+              "measure": "generated_target_union_center",
+              "boundary_tolerance": 0.05,
+              "reference_bbox_used": false
+            }
+          }
+        },
+        {
+          "check_id": "textcanvasbench_000007.check.006",
+          "requirement": "区域III标题位于页面右侧",
+          "targets": {
+            "subjects": [
+              "t004"
+            ],
+            "reference_frame": "canvas"
+          },
+          "quantifier": "each",
+          "criterion": {
+            "operator": "inside",
+            "expected": {
+              "value": "right"
+            },
+            "position_constraint": {
+              "coordinate_space": "normalized_xyxy",
+              "reference_frame": "canvas",
+              "allowed_range": [
+                0.666667,
+                0,
+                1,
+                1
+              ],
+              "range_source": "rules.json:region_boxes.right",
+              "measure": "generated_target_union_center",
+              "boundary_tolerance": 0.05,
+              "reference_bbox_used": false
+            }
+          }
+        },
+        {
+          "check_id": "textcanvasbench_000007.check.007",
+          "requirement": "区域IV标题位于页面右侧",
+          "targets": {
+            "subjects": [
+              "t022"
+            ],
+            "reference_frame": "canvas"
+          },
+          "quantifier": "each",
+          "criterion": {
+            "operator": "inside",
+            "expected": {
+              "value": "right"
+            },
+            "position_constraint": {
+              "coordinate_space": "normalized_xyxy",
+              "reference_frame": "canvas",
+              "allowed_range": [
+                0.666667,
+                0,
+                1,
+                1
+              ],
+              "range_source": "rules.json:region_boxes.right",
+              "measure": "generated_target_union_center",
+              "boundary_tolerance": 0.05,
+              "reference_bbox_used": false
+            }
+          }
+        },
+        {
+          "check_id": "textcanvasbench_000007.check.008",
+          "requirement": "区域II标题位于页面左下角",
+          "targets": {
+            "subjects": [
+              "t028"
+            ],
+            "reference_frame": "canvas"
+          },
+          "quantifier": "each",
+          "criterion": {
+            "operator": "inside",
+            "expected": {
+              "value": "bottom_left"
+            },
+            "position_constraint": {
+              "coordinate_space": "normalized_xyxy",
+              "reference_frame": "canvas",
+              "allowed_range": [
+                0,
+                0.666667,
+                0.333333,
+                1
+              ],
+              "range_source": "rules.json:region_boxes.bottom_left",
+              "measure": "generated_target_union_center",
+              "boundary_tolerance": 0.05,
+              "reference_bbox_used": false
+            }
+          }
+        },
+        {
+          "check_id": "textcanvasbench_000007.check.009",
+          "requirement": "封装示意图标签位于页面右下角",
+          "targets": {
+            "subjects": [
+              "t054"
+            ],
+            "reference_frame": "canvas"
+          },
+          "quantifier": "each",
+          "criterion": {
+            "operator": "inside",
+            "expected": {
+              "value": "bottom_right"
+            },
+            "position_constraint": {
+              "coordinate_space": "normalized_xyxy",
+              "reference_frame": "canvas",
+              "allowed_range": [
+                0.666667,
+                0.666667,
+                1,
+                1
+              ],
+              "range_source": "rules.json:region_boxes.bottom_right",
+              "measure": "generated_target_union_center",
+              "boundary_tolerance": 0.05,
+              "reference_bbox_used": false
+            }
+          }
+        },
+        {
+          "check_id": "textcanvasbench_000007.check.010",
+          "requirement": "印章文字位于区域III或IV旁边",
+          "targets": {
+            "inventory_subject_ids": [
+              "t053"
+            ]
+          },
+          "quantifier": {
+            "kind": "each",
+            "unit": "complete_source_defined_target_population",
+            "unknown_members": "do_not_shrink_denominator",
+            "empty_set": "not_a_vacuous_pass"
+          },
+          "criterion": {
+            "predicate": "adjacent_to_named_group",
+            "target": [
+              "t053"
+            ],
+            "anchor_group": {
+              "members": [
+                "r005",
+                "r006"
+              ],
+              "identity": "Field Notes and Constants group",
+              "geometry": "union_of_independently_observed_actual_region_boundaries_not_text_union"
+            },
+            "measure": "minimum_euclidean_boundary_gap / actual_canvas_diagonal",
+            "maximum_gap": 0.08,
+            "anchor_choice": "no_need_to_choose_III_or_IV_individually"
+          }
+        },
+        {
+          "check_id": "textcanvasbench_000007.check.018",
+          "requirement": "OSI模型标签与TCP/IP模型标签并列显示",
+          "targets": {
+            "kind": "source_named_diagram_groups",
+            "queries": [
+              "OSI protocol stack diagram",
+              "TCP/IP protocol stack diagram"
+            ],
+            "inventory_text_ids_are_context_only": true,
+            "selection_must_ignore_requested_position": true
+          },
+          "quantifier": {
+            "kind": "each",
+            "unit": "complete_source_defined_target_population",
+            "unknown_members": "do_not_shrink_denominator",
+            "empty_set": "not_a_vacuous_pass"
+          },
+          "criterion": {
+            "predicate": "two_named_diagrams_side_by_side",
+            "subjects": [
+              {
+                "query": "OSI protocol stack diagram"
+              },
+              {
+                "query": "TCP/IP protocol stack diagram"
+              }
+            ],
+            "geometry": "independent_actual_diagram_boundaries",
+            "requirements": [
+              "horizontal intervals do not substantially overlap",
+              "vertical overlap / smaller diagram height >= 0.6"
+            ],
+            "left_right_assignment": null,
+            "text_role": "labels associate the diagrams; do not demand all eleven labels occupy a single row"
+          }
+        }
+      ],
+      "order": [
+        {
+          "check_id": "textcanvasbench_000007.check.016",
+          "requirement": "表格列顺序为Layer, Data Unit (PDU), Core Protocols, Addressing",
+          "targets": {
+            "subjects": [
+              "t029",
+              "t030",
+              "t031",
+              "t032"
+            ],
+            "objects": [
+              "table_r004"
+            ],
+            "reference_frame": "none"
+          },
+          "quantifier": "each",
+          "criterion": {
+            "operator": "table_column_order",
+            "expected": {
+              "value": "Layer, Data Unit (PDU), Core Protocols, Addressing"
+            }
+          }
+        },
+        {
+          "check_id": "textcanvasbench_000007.check.017",
+          "requirement": "表格数据行保持对应关系",
+          "targets": {
+            "subjects": [
+              "t033",
+              "t034",
+              "t035",
+              "t036",
+              "t037",
+              "t038",
+              "t039",
+              "t040",
+              "t041",
+              "t042",
+              "t043",
+              "t044",
+              "t045",
+              "t046",
+              "t047",
+              "t048",
+              "t049",
+              "t050",
+              "t051",
+              "t052"
+            ],
+            "objects": [
+              "table_r004"
+            ],
+            "reference_frame": "none"
+          },
+          "quantifier": "each",
+          "criterion": {
+            "operator": "table_row_order",
+            "expected": {
+              "value": "aligned"
+            }
+          }
+        }
+      ],
+      "hierarchy": [
+        {
+          "check_id": "textcanvasbench_000007.check.004",
+          "requirement": "主标题字号为大号",
+          "targets": {
+            "subjects": [
+              "t001"
+            ],
+            "reference_frame": "none"
+          },
+          "quantifier": "each",
+          "criterion": {
+            "operator": "absolute_size",
+            "expected": {
+              "value": "large"
+            }
+          }
+        }
+      ],
+      "orientation": [
+        {
+          "check_id": "textcanvasbench_000007.check.011",
+          "requirement": "印章文字呈倾斜状态",
+          "targets": {
+            "subjects": [
+              "t053"
+            ],
+            "reference_frame": "none"
+          },
+          "quantifier": "each",
+          "criterion": {
+            "operator": "angled",
+            "expected": {
+              "value": "tilted"
+            }
+          }
+        }
+      ],
+      "color": [
+        {
+          "check_id": "textcanvasbench_000007.check.002",
+          "requirement": "主标题文字颜色为黑色",
+          "targets": {
+            "subjects": [
+              "t001"
+            ],
+            "reference_frame": "none"
+          },
+          "quantifier": "each",
+          "criterion": {
+            "operator": "foreground_color",
+            "expected": {
+              "value": "black"
+            }
+          }
+        },
+        {
+          "check_id": "textcanvasbench_000007.check.012",
+          "requirement": "印章文字颜色为红色",
+          "targets": {
+            "subjects": [
+              "t053"
+            ],
+            "reference_frame": "none"
+          },
+          "quantifier": "each",
+          "criterion": {
+            "operator": "foreground_color",
+            "expected": {
+              "value": "red"
+            }
+          }
+        }
+      ],
+      "style": [
+        {
+          "check_id": "textcanvasbench_000007.check.003",
+          "requirement": "主标题字体为衬线体",
+          "targets": {
+            "subjects": [
+              "t001"
+            ],
+            "reference_frame": "none"
+          },
+          "quantifier": "each",
+          "criterion": {
+            "operator": "font_family",
+            "expected": {
+              "value": "serif"
+            }
+          }
+        },
+        {
+          "check_id": "textcanvasbench_000007.check.013",
+          "requirement": "所列文字的字体/字形满足 serif",
+          "targets": {
+            "subjects": [
+              "t001",
+              "t003",
+              "t028",
+              "t004",
+              "t022"
+            ],
+            "reference_frame": "none"
+          },
+          "quantifier": "each",
+          "criterion": {
+            "operator": "font_family",
+            "expected": {
+              "value": "serif"
+            }
+          }
+        },
+        {
+          "check_id": "textcanvasbench_000007.check.014",
+          "requirement": "引言段落字体为无衬线体",
+          "targets": {
+            "subjects": [
+              "t002"
+            ],
+            "reference_frame": "none"
+          },
+          "quantifier": "mainly",
+          "criterion": {
+            "operator": "font_family",
+            "expected": {
+              "value": "sans-serif"
+            }
+          }
+        },
+        {
+          "check_id": "textcanvasbench_000007.check.015",
+          "requirement": "区域III列表项字体为无衬线体",
+          "targets": {
+            "subjects": [
+              "t016",
+              "t017",
+              "t018",
+              "t019"
+            ],
+            "reference_frame": "none"
+          },
+          "quantifier": "mainly",
+          "criterion": {
+            "operator": "font_family",
+            "expected": {
+              "value": "sans-serif"
+            }
+          }
+        }
+      ]
+    }
+  },
+  "target_inventory": {
+    "texts": [
+      {
+        "id": "t001",
+        "text": "NETWORK ARCHITECTURES",
+        "region_id": "r001",
+        "role": "标题"
+      },
+      {
+        "id": "t002",
+        "text": "A comparative study of the Open Systems Interconnection (OSI) and the Transmission Control Protocol / Internet Protocol (TCP/IP) frameworks. These models define the standards for communication across heterogeneous hardware systems, ensuring the reliable transfer of data packets from origin to destination across the global digital landscape.",
+        "region_id": "r002",
+        "role": "正文"
+      },
+      {
+        "id": "t003",
+        "text": "I. The Stack Comparison",
+        "region_id": "r003",
+        "role": "标题"
+      },
+      {
+        "id": "t005",
+        "text": "7. Application Layer",
+        "region_id": "r003",
+        "role": "标签"
+      },
+      {
+        "id": "t006",
+        "text": "Application Layer (TCP)",
+        "region_id": "r003",
+        "role": "标签"
+      },
+      {
+        "id": "t007",
+        "text": "6. Presentation Layer",
+        "region_id": "r003",
+        "role": "标签"
+      },
+      {
+        "id": "t008",
+        "text": "5. Session Layer",
+        "region_id": "r003",
+        "role": "标签"
+      },
+      {
+        "id": "t009",
+        "text": "4. Transport Layer",
+        "region_id": "r003",
+        "role": "标签"
+      },
+      {
+        "id": "t010",
+        "text": "Transport Layer",
+        "region_id": "r003",
+        "role": "标签"
+      },
+      {
+        "id": "t011",
+        "text": "3. Network Layer",
+        "region_id": "r003",
+        "role": "标签"
+      },
+      {
+        "id": "t012",
+        "text": "Internet Layer",
+        "region_id": "r003",
+        "role": "标签"
+      },
+      {
+        "id": "t013",
+        "text": "2. Data Link Layer",
+        "region_id": "r003",
+        "role": "标签"
+      },
+      {
+        "id": "t014",
+        "text": "Network Interface",
+        "region_id": "r003",
+        "role": "标签"
+      },
+      {
+        "id": "t015",
+        "text": "1. Physical Layer",
+        "region_id": "r003",
+        "role": "标签"
+      },
+      {
+        "id": "t020",
+        "text": "Left: OSI 7-Layer Abstract Model",
+        "region_id": "r003",
+        "role": "标签"
+      },
+      {
+        "id": "t021",
+        "text": "Right: TCP/IP Practical Protocol Suite",
+        "region_id": "r003",
+        "role": "标签"
+      },
+      {
+        "id": "t028",
+        "text": "II. Protocol Data Taxonomy",
+        "region_id": "r004",
+        "role": "标题"
+      },
+      {
+        "id": "t029",
+        "text": "Layer",
+        "region_id": "r004",
+        "role": "表格标题"
+      },
+      {
+        "id": "t030",
+        "text": "Data Unit (PDU)",
+        "region_id": "r004",
+        "role": "表格标题"
+      },
+      {
+        "id": "t031",
+        "text": "Core Protocols",
+        "region_id": "r004",
+        "role": "表格标题"
+      },
+      {
+        "id": "t032",
+        "text": "Addressing",
+        "region_id": "r004",
+        "role": "表格标题"
+      },
+      {
+        "id": "t033",
+        "text": "Application",
+        "region_id": "r004",
+        "role": "表格单元格"
+      },
+      {
+        "id": "t034",
+        "text": "Data / Message",
+        "region_id": "r004",
+        "role": "表格单元格"
+      },
+      {
+        "id": "t035",
+        "text": "HTTP, DNS, FTP, SMTP",
+        "region_id": "r004",
+        "role": "表格单元格"
+      },
+      {
+        "id": "t036",
+        "text": "Domain Name",
+        "region_id": "r004",
+        "role": "表格单元格"
+      },
+      {
+        "id": "t037",
+        "text": "Transport",
+        "region_id": "r004",
+        "role": "表格单元格"
+      },
+      {
+        "id": "t038",
+        "text": "Segment (TCP) / Datagram",
+        "region_id": "r004",
+        "role": "表格单元格"
+      },
+      {
+        "id": "t039",
+        "text": "TCP, UDP",
+        "region_id": "r004",
+        "role": "表格单元格"
+      },
+      {
+        "id": "t040",
+        "text": "Port Number",
+        "region_id": "r004",
+        "role": "表格单元格"
+      },
+      {
+        "id": "t041",
+        "text": "Network",
+        "region_id": "r004",
+        "role": "表格单元格"
+      },
+      {
+        "id": "t042",
+        "text": "Packet",
+        "region_id": "r004",
+        "role": "表格单元格"
+      },
+      {
+        "id": "t043",
+        "text": "IP (IPv4/v6), ICMP",
+        "region_id": "r004",
+        "role": "表格单元格"
+      },
+      {
+        "id": "t044",
+        "text": "IP Address",
+        "region_id": "r004",
+        "role": "表格单元格"
+      },
+      {
+        "id": "t045",
+        "text": "Data Link",
+        "region_id": "r004",
+        "role": "表格单元格"
+      },
+      {
+        "id": "t046",
+        "text": "Frame",
+        "region_id": "r004",
+        "role": "表格单元格"
+      },
+      {
+        "id": "t047",
+        "text": "Ethernet, Wi-Fi, ARP",
+        "region_id": "r004",
+        "role": "表格单元格"
+      },
+      {
+        "id": "t048",
+        "text": "MAC Address",
+        "region_id": "r004",
+        "role": "表格单元格"
+      },
+      {
+        "id": "t049",
+        "text": "Physical",
+        "region_id": "r004",
+        "role": "表格单元格"
+      },
+      {
+        "id": "t050",
+        "text": "Bit stream",
+        "region_id": "r004",
+        "role": "表格单元格"
+      },
+      {
+        "id": "t051",
+        "text": "DSL, IEEE 802.3, Hub",
+        "region_id": "r004",
+        "role": "表格单元格"
+      },
+      {
+        "id": "t052",
+        "text": "Physical Voltage",
+        "region_id": "r004",
+        "role": "表格单元格"
+      },
+      {
+        "id": "t004",
+        "text": "III. Field Notes",
+        "region_id": "r005",
+        "role": "标题"
+      },
+      {
+        "id": "t016",
+        "text": "01 Physical Layer (L1): The foundation of all transit. It encompasses the raw transmission of bits over physical media including copper wires, fiber optics, or radio waves.",
+        "region_id": "r005",
+        "role": "正文"
+      },
+      {
+        "id": "t017",
+        "text": "02 Network Layer (L3): Responsible for packet forwarding and routing. It utilizes logical IP addresses to find paths across multiple network nodes.",
+        "region_id": "r005",
+        "role": "正文"
+      },
+      {
+        "id": "t018",
+        "text": "03 Transport Layer (L4): Manages end-to-end communication. TCP provides reliable delivery via handshakes, whereas UDP prioritizes speed over integrity.",
+        "region_id": "r005",
+        "role": "正文"
+      },
+      {
+        "id": "t019",
+        "text": "04 Application (L7): The interface for users. HTTP for web browsing, SMTP for mail, and SSH for secure remote management operate here.",
+        "region_id": "r005",
+        "role": "正文"
+      },
+      {
+        "id": "t022",
+        "text": "IV. Constants",
+        "region_id": "r006",
+        "role": "标题"
+      },
+      {
+        "id": "t023",
+        "text": "Port Range Specification",
+        "region_id": "r006",
+        "role": "标签"
+      },
+      {
+        "id": "t024",
+        "text": "Total Ports: 65,535",
+        "region_id": "r006",
+        "role": "标签"
+      },
+      {
+        "id": "t025",
+        "text": "Well-Known: 0 - 1,023",
+        "region_id": "r006",
+        "role": "标签"
+      },
+      {
+        "id": "t026",
+        "text": "Registered: 1,024 - 49,151",
+        "region_id": "r006",
+        "role": "标签"
+      },
+      {
+        "id": "t027",
+        "text": "Dynamic: 49,152 - 65,535",
+        "region_id": "r006",
+        "role": "标签"
+      },
+      {
+        "id": "t053",
+        "text": "APPROVED STANDARD 1984",
+        "region_id": "r007",
+        "role": "标签"
+      },
+      {
+        "id": "t054",
+        "text": "ENCAPSULATION",
+        "region_id": "r008",
+        "role": "标签"
+      },
+      {
+        "id": "t055",
+        "text": "Ref: ISO/IEC 7498-1:1994",
+        "region_id": "r009",
+        "role": "页脚"
+      },
+      {
+        "id": "t056",
+        "text": "Plate No. 042 / Network Encyclopedia",
+        "region_id": "r009",
+        "role": "页脚"
+      }
+    ],
+    "regions": [
+      {
+        "id": "r001",
+        "label": "主标题",
+        "members": [
+          "t001"
+        ]
+      },
+      {
+        "id": "r002",
+        "label": "引言段落",
+        "members": [
+          "t002"
+        ]
+      },
+      {
+        "id": "r003",
+        "label": "I. 堆栈对比区域",
+        "members": [
+          "t003",
+          "t005",
+          "t006",
+          "t007",
+          "t008",
+          "t009",
+          "t010",
+          "t011",
+          "t012",
+          "t013",
+          "t014",
+          "t015",
+          "t020",
+          "t021"
+        ]
+      },
+      {
+        "id": "r004",
+        "label": "II. 协议数据分类区域",
+        "members": [
+          "t028",
+          "t029",
+          "t030",
+          "t031",
+          "t032",
+          "t033",
+          "t034",
+          "t035",
+          "t036",
+          "t037",
+          "t038",
+          "t039",
+          "t040",
+          "t041",
+          "t042",
+          "t043",
+          "t044",
+          "t045",
+          "t046",
+          "t047",
+          "t048",
+          "t049",
+          "t050",
+          "t051",
+          "t052"
+        ]
+      },
+      {
+        "id": "r005",
+        "label": "III. 现场笔记区域",
+        "members": [
+          "t004",
+          "t016",
+          "t017",
+          "t018",
+          "t019"
+        ]
+      },
+      {
+        "id": "r006",
+        "label": "IV. 常量区域",
+        "members": [
+          "t022",
+          "t023",
+          "t024",
+          "t025",
+          "t026",
+          "t027"
+        ]
+      },
+      {
+        "id": "r007",
+        "label": "红色印章",
+        "members": [
+          "t053"
+        ]
+      },
+      {
+        "id": "r008",
+        "label": "封装示意图",
+        "members": [
+          "t054"
+        ]
+      },
+      {
+        "id": "r009",
+        "label": "页脚",
+        "members": [
+          "t055",
+          "t056"
+        ]
+      }
+    ]
+  },
+  "caption_en": "D3 specification construction for a network-architecture infographic. Explicit prompt requirements are associated with text targets and organized into six attribute families. Each check retains its target, quantifier, and criterion."
+}
