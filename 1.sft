@@ -1,0 +1,284 @@
+# 局部屏幕去摩尔纹：Qwen2.1 LoRA SFT 完整流程（含数据）
+
+整理日期：2026-11-26。
+
+## 1. 任务目标和当前状态
+
+目标：让模型去除局部屏幕内部的摩尔纹、彩色条纹和相关伪影，尽量保留文字内容、细节、颜色以及屏幕外人物和场景。
+
+本阶段使用配对数据进行监督微调：摩尔纹图 LR 作为条件输入，干净图 GT 作为监督目标。训练原始 Qwen-Image-2.1 的 LoRA，不从旧 SFT1000、SFT9300 或 NFT 权重继续训练。
+
+**当前状态：尚未开始本方案的正式训练。2026-11-24 用户要求停止后，8卡短测试和自动启动进程均已终止；STOP_REQUEST 保留。本文仅记录流程，不恢复训练、不重新开启自动启动。**
+
+训练工程目录：
+
+```text
+/data_mount_162/zhaoqianqian/code/DiffSynth-Studio/demoire_sft/qwen21_9sources_1024_10k_v1
+```
+
+该目录名中的 10k 表示 10,000 个优化器更新步，并非 10,000 张图片或 10,000 个 epoch。
+
+## 2. 最终数据组成
+
+“不重复配对数”是固定清单中不同 LR/GT 配对的数量；“抽样次数”包含同一配对在不同位置重复裁剪。数据比例是实际训练抽样比例。
+
+| 数据来源 | 清单字段 | 不重复配对数 | 训练占比 | 10,000 step 抽样次数 | 用途 |
+|---|---|---:|---:|---:|---|
+| UHDM 局部屏幕合成 | uhdm_local | 14,057 | 15% | 48,000 | 学习真实背景中的局部屏幕修复及前景保持 |
+| UniDemoire 局部屏幕合成 | unidemoire_local | 10,973 | 15% | 48,000 | 增加局部屏幕内容与退化多样性 |
+| FHDMi 局部屏幕合成 | fhdmi_local | 10,000 | 10% | 32,000 | 补充屏幕内容及环境组合 |
+| UHDM 原始配对 | uhdm_original | 3,817 | 15% | 48,000 | 提供高分辨率原始去摩尔纹监督 |
+| FHDMi 原始配对 | fhdmi_original | 8,000 | 15% | 48,000 | 增加原始配对内容，避免只重复旧995对 |
+| UniDemoire 原始配对 | unidemoire_original | 8,000 | 15% | 48,000 | 提供1024分辨率去摩尔纹监督 |
+| TIP2018 原始配对 | tip2018 | 8,000 | 5% | 16,000 | 补充退化和内容类型 |
+| 文档条纹／颜色退化配对 | document_stripes_color | 8,000 | 5% | 16,000 | 约束文字区域的恢复 |
+| 清晰文档恒等配对（输入=GT） | document_identity | 6,549 | 5% | 16,000 | 减少对原本清晰文字的不必要修改 |
+| **合计** | — | **77,396** | **100%** | **320,000** | — |
+
+三类局部合成合计40%，三类主要原始配对合计45%，TIP2018占5%，文档合计10%。不同流可能共享内容、GT或背景，因此77,396对不代表77,396个独立场景。
+
+### 2.1 数据实际存放位置
+
+以下相对文件结构以所列根目录为基准；训练真正使用的逐文件绝对路径，以 selected_pairs.json 为准。
+
+| 数据 | 根目录及配对结构 |
+|---|---|
+| UHDM 原始配对 | `/data_mount_162/zhaoqianqian/datasets/UHDM/UHDM/train/`，`moire/<ID>.jpg` 对应 `gt/<ID>.jpg` |
+| FHDMi 原始配对 | `/data_mount_162/zhaoqianqian/code/RM_moire/datasets/FHDMi/`，`source/src_<ID>.png` 对应 `target/tar_<ID>.png` |
+| UniDemoire 原始配对 | `/data_two/zhaoqianqian/project/datasets/undemoire/unidemoire/`，`source/<ID>.png` 对应 `target/<ID>.png` |
+| UHDM、UniDemoire 局部合成 | `/data_two/zhaoqianqian/outputs/demoire_env30k_reviewed600_v2/`，`train/` 或 `validation/` 下每个样本目录的 `source.png` 和 `target.png`；由清单区分内容来源 |
+| FHDMi 局部合成 | `/data_two/zhaoqianqian/outputs/demoire_fhdmi30k_v1/`，`train/` 或 `validation/` 下每个样本目录的 `source.png` 和 `target.png` |
+| TIP2018 | `/data_mount_162/zhaoqianqian/code/RM_moire/datasets/TIP2018/trainData/`，`source/*_source.png` 对应 `target/*_target.png` |
+| 文档退化配对 | `/data_mount_162/zhaoqianqian/code/RM_moire/datasets/DocumentMoire_synthetic_v1/`，`lq/<退化类型>/<ID>.png` 对应 `gt/<ID>.png` |
+| 文档恒等配对 | 同一文档目录的 `gt/<ID>.png` 同时作为输入和GT |
+
+局部合成元数据：
+
+```text
+/data_mount_162/zhaoqianqian/code/SAM/outputs/env30k_reviewed600_v2
+/data_mount_162/zhaoqianqian/code/SAM/outputs/fhdmi30k_v1
+```
+
+文档底层内容来源为 DocVQA 训练集10,194张、XFUND中文训练集149张，共10,343张。两个文档流各安排80%的抽样次数使用DocVQA、20%使用XFUND；XFUND会重复出现，这不等于存在同样数量的不同中文文档。恒等配对选中6,400张DocVQA和149张XFUND，因此是6,549个不同配对。
+
+文档退化流排除了三个纯噪声预设 gaussian_noise、impulse_noise、mixed_noise；保留条纹、网格、彩虹等28个宽/细预设和 multi_mix，共29种。它们是程序化退化，不能宣称完整模拟真实屏摄摩尔纹的物理成因。
+
+### 2.2 选中数据的原始分辨率
+
+以下来自当前 selected_pairs.json 的尺寸审计；尺寸顺序为宽×高。范围说明的是选中样本，不是对整个公开数据集规格的断言。
+
+| 数据 | 当前选中数据的分辨率情况 |
+|---|---|
+| UHDM 原始配对 | 4032×3024：2,315对；4624×3472：1,502对 |
+| FHDMi 原始配对 | 1920×1080：8,000对 |
+| UniDemoire 原始配对 | 1024×1024：8,000对 |
+| UHDM 局部合成 | 多分辨率；常见4032×3024、5712×4284、1920×1080；所有宽高分量范围544～5712 |
+| UniDemoire 局部合成 | 多分辨率；常见1440×1080、1440×1920、1920×1080；所有宽高分量范围544～2638 |
+| FHDMi 局部合成 | 多分辨率；常见1440×1080、1920×1080、1440×1920；所有宽高分量范围544～5712 |
+| TIP2018 | 变分辨率，选中图像的所有宽高分量范围67～1002；存在较小图像 |
+| 文档退化配对 | 保留文档分辨率，所有宽高分量范围200～9723 |
+| 文档恒等配对 | 保留文档分辨率，所有宽高分量范围200～9681 |
+
+**TIP2018需要特别留意：小图放大只能增加像素数，不能恢复真实细节；当前清单没有额外施加最低短边阈值。** 若后续决定过滤小图，需要重新冻结名单和抽样计划、重新审计，不能仍沿用原有清单的校验结果。本次整理没有修改数据。
+
+### 2.3 600个背景如何使用
+
+- 三类局部合成合计覆盖全部600个背景（000000～000599）。
+- UHDM局部合成支持600个背景，UniDemoire局部合成支持338个，FHDMi局部合成支持405个；各自支持的背景均参与训练。
+- 不要求每个来源都拥有600个背景。先根据实际可用组合，在满足各来源总配额的同时均衡全局背景抽样。
+- 10,000步中，400个背景各抽样214次，200个背景各抽样212次，合计128,000次局部合成抽样。
+- 同一背景尽量轮换不同贴入内容；样本用完一轮后重新打乱再循环。
+- Mask用于此前的数据合成和保留遮挡，本次SFT不把mask输入模型，也没有mask加权损失。
+
+### 2.4 训练与测试划分
+
+为满足全部600个背景参与训练的要求，旧内部验证的40个背景和部分旧内部验证内容已经并入训练。路径名叫 validation 不代表本轮仍是独立验证集。
+
+本方案排除：UHDM官方500张测试集、TIP测试集、DocVQA验证/测试集、XFUND验证集、实拍000600～000699测试图。
+
+TIP训练目录与测试目录有16个相同规范化ID，已从训练候选池删除。这里核验的是ID重叠，不冒充逐像素重复检测。
+
+FHDMi本地原始数据按用户确认不含测试图，从中固定选8,000对；另行准备的FHDMi正式测试数据不参与本轮训练。
+
+600张实拍训练背景本身没有干净GT，本轮通过局部合成形成配对监督，而不是把实拍摩尔纹图直接当干净GT。
+
+## 3. 从原图到1024训练图块
+
+采用在线配对裁剪，不预先导出整套1024图块。每次读取原图、应用EXIF方向校正，检查LR与GT尺寸一致，再使用同一坐标和缩放处理两张图。
+
+| EXIF校正后的原图短边 | 处理方式 | 模型收到的尺寸 |
+|---|---|---|
+| ≥2048 | 随机同步裁2048×2048，然后LR与GT都用Bicubic缩小 | 1024×1024 |
+| 1024～2047 | 同位置裁1024×1024，不先整体缩小 | 1024×1024 |
+| <1024 | 等比例放大到短边至少1024，再同步裁1024×1024 | 1024×1024 |
+
+例如：4032×3024的UHDM先取2048方块再缩小；1920×1080的FHDMi直接取1024方块；1024方图直接使用；小于1024的图先放大。
+
+本轮最终只有一个1024尺寸桶，不再混合1024/2048模型输入。2048是大图的裁剪窗口，不是最终训练尺寸。
+
+不做整图覆盖式滑窗，因此没有固定overlap参数。不同随机裁剪可能自然重叠，但不是按某个滑窗重叠率训练。当前实现也不根据mask限制裁剪位置，可能裁到屏幕外或空白区域。
+
+数据增强以配对裁剪为主；不另加LR/GT各自独立的颜色、几何变换，避免破坏监督关系。
+
+## 4. 固定抽样与复现
+
+固定随机种子20261123，训练前已生成：
+
+```text
+selected_pairs.json        # 每个配对的LR、GT绝对路径、来源、尺寸、背景等
+sampling_plan.csv          # 320000次抽样：update、micro、rank、slot、pair_key、crop_seed
+sampling_audit.json        # 来源比例、配对数、背景及划分审计
+background_draw_counts.csv # 原5000步背景分配表；10000步次数须乘2
+setup_checks.json          # 已核验10000步、320000次抽样、600背景等
+preflight_cpu.json         # 文件/尺寸及代表性裁剪检查结果、清单哈希
+```
+
+每个优化器更新步的32个样本来自同一数据流，数据流的更新步顺序按配额打乱；每卡和每个slot拥有各自的样本及裁剪种子。每个来源的总抽样次数严格满足上表。
+
+目前10,000步计划由前5,000步已冻结的配对顺序扩展而来：后5,000步重复配对顺序，但使用新的裁剪种子。因此数据和裁剪可复现，不等于每次都裁同一块，也不等于第二阶段重新增加了独立内容。
+
+这不是标准“所有图片不重复遍历一次”的epoch训练：
+
+- 10,000步 × 8卡 × 每卡2张 × 累积2次 = 320,000次样本曝光。
+- 320,000 / 77,396 ≈4.13只是整体曝光量比例，不能直接叫每张图片均匀训练了4.13轮。
+- 例如FHDMi原始配对8,000对抽样48,000次，平均每对6次；UHDM原始配对平均约12.58次。各流和背景重复率不同。
+- 不需要把所有裁剪图保存到磁盘；保留原图、固定清单、代码和种子即可复现。
+
+## 5. 模型和训练参数
+
+| 项目 | 配置 |
+|---|---|
+| 基模 | `/data/wx1522744/ckpts/Qwen/Qwen-Image-2.1` |
+| 实际框架代码 | `/data/wx1522744/src/DiffSynth-Studio-qwen21` |
+| 框架commit | `7f6187275d45eb715bbc3e49e7ae5399f7fcdb1c` |
+| 工程/配置目录 | `.../DiffSynth-Studio/demoire_sft/qwen21_9sources_1024_10k_v1` |
+| 初始化 | 原始Qwen2.1，新LoRA，不载入旧SFT/NFT |
+| GPU | 8卡，CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 |
+| 每卡真实batch | 2张独立图片 |
+| 梯度累积 | 2个micro-step |
+| 有效batch | 32 |
+| 最大优化器更新步 | 10,000 |
+| 学习率 | 5e-6，当前代码为固定学习率 |
+| 优化器 | AdamW，weight_decay=0.01 |
+| 梯度裁剪 | norm=1.0，非有限梯度报错 |
+| LoRA rank | 32 |
+| LoRA作用模块 | DiT attention 的 to_q、to_k、to_v、to_out.0 |
+| 冻结部分 | 基模原始参数、文本编码器和VAE；只更新LoRA |
+| 精度 | 基模BF16，LoRA可训练参数FP32，前向BF16 autocast |
+| 梯度检查点 | 开启 |
+| CPU offload | 关闭 |
+| 梯度检查点CPU offload | 关闭 |
+| VAE编码 | 不分块，tiled=False |
+| 输入/GT尺寸 | 全部1024×1024 |
+| Checkpoint | 第1步、每100步、最终步；停止请求时也保存 |
+
+每步的逻辑是：每卡先处理2张并反传，再处理另外2张并反传，随后8卡同步梯度并执行一次优化器更新。LoRA之外的参数不进行梯度更新。
+
+### 5.1 Prompt
+
+所有来源共用同一条去摩尔纹指令，训练时prompt参与文本条件编码：
+
+```text
+Remove moire patterns and color artifacts while preserving text, edges, fine details, colors, and the original image structure.
+```
+
+没有把多条prompt展开给同一张图片；每次抽样对应一对LR/GT和这条固定指令。
+
+### 5.2 监督目标与损失
+
+流程：
+
+```text
+LR图 → 冻结VAE/条件处理 → 编辑条件
+GT图 → 冻结VAE → 干净目标latent
+目标latent + 随机噪声 + 随机时间步 → 带噪latent
+文本条件 + 编辑条件 + 带噪latent → Qwen2.1 DiT（仅LoRA更新）
+预测流速度 vs 目标流速度 → FlowMatchSFTLoss → 反向传播更新LoRA
+```
+
+采用框架官方 FlowMatchSFTLoss，即在潜空间学习流匹配的速度预测，使用调度器定义的目标与时间权重。不是直接对输出RGB图与GT做一个像素L2，也不是训练奖励模型。
+
+同一micro-batch共享抽取的时间步，每张图的噪声独立；各rank的随机噪声不同。VAE和文本编码按样本准备，DiT执行真实batch=2。
+
+当前没有加入额外OCR损失、颜色损失、LPIPS/锐度损失、mask损失、RM或NFT。清晰文档恒等配对提供“清晰输入尽量不修改”的监督，但不能保证模型绝不改字或屏幕外区域。
+
+## 6. 已完成和未完成的检查
+
+已完成：
+
+1. 固定77,396对独立配对，核对所有路径可由图像读取器打开并读取头信息。
+2. 逐对核验EXIF方向校正后的LR/GT尺寸一致。
+3. 对9个数据流各8个样本，共72对进行实际解码与配对裁剪检查。
+4. 核验320,000条抽样、10,000个更新步、每步32个样本、600背景覆盖及各来源配额。
+5. 核验FHDMi、UniDemoire原始配对均为8,000对，裁剪种子无重复。
+
+这些检查不等于逐图完成配准、颜色合理性、文字正确性和GT质量的人眼审核；也不等于所有原图都做过完整像素解码。
+
+未完成：本方案8卡短测试被用户终止，尚未获得完整通过证据；正式10,000步训练尚未启动。旧SFT1000的检查结果不能冒充本次已通过。
+
+## 7. 将来明确要求启动时的顺序
+
+当前保持停止。下面是操作记录，不代表已执行或自动排队。
+
+1. 核对8卡是否空闲，确认没有其它生成/测评任务占用。不得未经授权停止其它服务。
+2. 确认使用当前固定清单，校验 selected_pairs.json、sampling_plan.csv 与 preflight_cpu.json 的哈希一致。
+3. 如修改数据、比例或裁剪规则，先重新生成清单并审计，再启动；不可继续使用旧通过证据。
+4. 收到启动指令后，才移除本目录的STOP_REQUEST；旧 auto_start.py 不恢复、不参与手动启动。
+5. 运行8卡batch=2短测试，检查有限loss、非零梯度、LoRA参数确实更新、实际batch和输入尺寸正确，以及8个rank全部通过。
+6. 短测试通过后正式运行10,000步，检查第1步日志和checkpoint落盘，再继续观察loss、显存、耗时及定期样例。
+
+短测试命令（仅在重新授权启动后执行）：
+
+```bash
+cd /data_mount_162/zhaoqianqian/code/DiffSynth-Studio/demoire_sft/qwen21_9sources_1024_10k_v1
+bash run_8gpu.sh --smoke > smoke_8gpu.log 2>&1
+```
+
+正式训练命令（短测试通过后执行）：
+
+```bash
+cd /data_mount_162/zhaoqianqian/code/DiffSynth-Studio/demoire_sft/qwen21_9sources_1024_10k_v1
+bash run_8gpu.sh --train --max-updates 10000 > train_8gpu.log 2>&1
+```
+
+正式训练会检查本工程 smoke_8gpu/rank0_passed.json～rank7_passed.json。实际需要后台运行时应使用独立会话并保存PID和日志，不能把“脚本已生成”称为“训练已启动”。
+
+### 7.1 权重、日志与停止
+
+```text
+output_8gpu/checkpoint-100/lora.safetensors
+output_8gpu/checkpoint-100/state.json
+output_8gpu/checkpoint-100/optimizer.pt
+output_8gpu/rank0.jsonl ～ rank7.jsonl
+train_8gpu.log
+TRAINING_COMPLETE.json  # 仅正式达到计划最终步且未请求停止时生成
+```
+
+其它checkpoint使用同样结构。state.json记录更新步、配置、训练清单及抽样计划哈希；optimizer.pt记录优化器和随机状态。
+
+正常停止：在工程目录创建STOP_REQUEST。正式训练在一次更新后保存再退出。自动启动目前已取消，STOP_REQUEST当前已经存在。
+
+## 8. 验证和模型选择
+
+不只看训练loss下降，也不默认最后一步最好。恢复训练后可按固定小验证集分阶段检查候选checkpoint，再对少数较好的checkpoint扩大测评。
+
+验证时固定prompt、随机种子、采样步数、CFG、输入处理和VAE方式；原始Qwen与本SFT应使用同一推理设置，避免把推理差异误当训练收益。
+
+为核对训测一致性，首先使用1024图块、VAE不分块。整图/外层滑窗推理另做实验，记录图块大小、重叠与融合方式；外层RGB图块切分和VAE内部分块是两件事，不能混称“切patch”。
+
+重点分开检查：
+
+- 屏幕内：摩尔纹残留、彩纹、细节是否恢复，文字是否清楚且没有错字/漏字/笔画损伤。
+- 颜色：偏色、发灰、蒙版感以及整体亮度是否恶化。GT本身存在色差时，不能只凭更接近GT就声称人眼更好。
+- 屏幕外：人物、头发、讲台、背景是否被改动，是否出现灰边和拼接。
+- 泛化：原始公开配对测试集与实拍000600～000699分别评估；旧内部合成验证背景已参与训练，不能用来宣称未见背景泛化。
+
+有GT可报告PSNR/SSIM/LPIPS，同时看视觉结果；无GT的NIQE、BRISQUE、MUSIQ只能辅助，不足以证明去摩尔纹、文字正确或保真。后续reward偏好数据及训练是另一个阶段，本SFT流程不包含它。
+
+## 9. 文件依据及注意事项
+
+本记录依据当前工程的 config.json、selected_pairs.json、sampling_plan.csv、sampling_audit.json、setup_checks.json、preflight_cpu.json、data.py、train.py、batch_module.py 和 stopped_by_user.json。
+
+旧config.json中部分说明字段沿用了上一版1000步实验文字，status仍可能写scheduled_after_textpecker；这些历史字段不能作为运行状态。实际配置以 max_updates=10000、save_every_updates=100等参数及当前代码为准，运行状态以 stopped_by_user.json/auto_status.json及真实进程、训练日志为准。
+
+本次仅撰写流程，没有修改冻结数据、训练代码、停止标记或启动任何训练。
